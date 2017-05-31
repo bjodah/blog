@@ -1,0 +1,19 @@
+build:
+  image: bjodah/bjodahimg16:v1.2
+  commands:
+    - if [ $CI_BRANCH != "master" ]; then sed -i.bak "s/bjodah.github.io\//hera.physchem.kth.se\/\~bjodah-github-io\/$CI_BRANCH\//" conf.py; fi
+    - nikola build
+    - mkdir deploy
+    - cp -r output/ deploy/$CI_BRANCH
+
+
+deploy:
+
+  rsync:
+    host: hera.physchem.kth.se
+    user: bjodah-github-io
+    port: 22
+    source: deploy/
+    target: ~/public_html
+    recursive: true
+    delete: false

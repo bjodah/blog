@@ -1,0 +1,5 @@
+.*.db
+output/
+cache/
+**/__pycache__
+posts/.ipynb_checkpoints/
