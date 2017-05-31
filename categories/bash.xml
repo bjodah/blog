@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel><title>Björn I. Dahlgren's personal page (Posts about bash)</title><link>http://bjodah.github.io/blog/</link><description></description><atom:link href="http://bjodah.github.io/blog/categories/bash.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Wed, 31 May 2017 13:36:32 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Dealing with temporaries in bash.rst</title><link>http://bjodah.github.io/blog/posts/dealing-with-temporaries-in-bash.html</link><dc:creator>Björn Dahlgren</dc:creator><description>&lt;div&gt;&lt;p&gt;It is quite common that I want to create a temporary file or directory during the
+exectuion of a bash script. For this we may use &lt;tt class="docutils literal"&gt;mktemp&lt;/tt&gt; and &lt;tt class="docutils literal"&gt;mktemp &lt;span class="pre"&gt;-d&lt;/span&gt;&lt;/tt&gt; respectively.&lt;/p&gt;
+&lt;p&gt;The problem that arises is that you are not sure that your clean up code gets executed
+if the user aborts the script by e.g. hitting Ctrl+c. An elegant solution was given here
+&lt;a class="reference external" href="http://unix.stackexchange.com/a/149093/119480"&gt;http://unix.stackexchange.com/a/149093/119480&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;to illustrate the solution let's consider the following script:&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_2e944e41df014dd0a15ae7af5f198f8b-1"&gt;&lt;/a&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
+&lt;a name="rest_code_2e944e41df014dd0a15ae7af5f198f8b-2"&gt;&lt;/a&gt;&lt;span class="nv"&gt;TMPDIR&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;mktemp -d&lt;span class="k"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_2e944e41df014dd0a15ae7af5f198f8b-3"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$TMPDIR&lt;/span&gt;
+&lt;a name="rest_code_2e944e41df014dd0a15ae7af5f198f8b-4"&gt;&lt;/a&gt;cleanup&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+&lt;a name="rest_code_2e944e41df014dd0a15ae7af5f198f8b-5"&gt;&lt;/a&gt;    rm -r &lt;span class="nv"&gt;$TMPDIR&lt;/span&gt;
+&lt;a name="rest_code_2e944e41df014dd0a15ae7af5f198f8b-6"&gt;&lt;/a&gt;    &lt;span class="nb"&gt;exit&lt;/span&gt;
+&lt;a name="rest_code_2e944e41df014dd0a15ae7af5f198f8b-7"&gt;&lt;/a&gt;&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;a name="rest_code_2e944e41df014dd0a15ae7af5f198f8b-8"&gt;&lt;/a&gt;&lt;span class="nb"&gt;trap&lt;/span&gt; cleanup INT TERM
+&lt;a name="rest_code_2e944e41df014dd0a15ae7af5f198f8b-9"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"A"&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; tee &lt;span class="nv"&gt;$TMPDIR&lt;/span&gt;/a.txt
+&lt;a name="rest_code_2e944e41df014dd0a15ae7af5f198f8b-10"&gt;&lt;/a&gt;sleep &lt;span class="m"&gt;3&lt;/span&gt;  &lt;span class="c1"&gt;# Try hitting Ctrl-C here (use Ctrl-Z to inspect files)&lt;/span&gt;
+&lt;a name="rest_code_2e944e41df014dd0a15ae7af5f198f8b-11"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"B"&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; tee &lt;span class="nv"&gt;$TMPDIR&lt;/span&gt;/b.txt
+&lt;a name="rest_code_2e944e41df014dd0a15ae7af5f198f8b-12"&gt;&lt;/a&gt;cleanup
+&lt;a name="rest_code_2e944e41df014dd0a15ae7af5f198f8b-13"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"C"&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; tee &lt;span class="nv"&gt;$TMPDIR&lt;/span&gt;/b.txt &lt;span class="c1"&gt;# will never be reached&lt;/span&gt;
+&lt;/pre&gt;&lt;p&gt;The above code removes the temporary directory created at exit, no matter if the
+script is allowed to finnish or aborted by the user invoking &lt;tt class="docutils literal"&gt;kill&lt;/tt&gt; on the PID
+(defaults to SIGTERM) or hits Ctrl+C (sends the SIGINT signal).&lt;/p&gt;&lt;/div&gt;</description><category>bash</category><guid>http://bjodah.github.io/blog/posts/dealing-with-temporaries-in-bash.html</guid><pubDate>Wed, 06 Jan 2016 01:42:10 GMT</pubDate></item></channel></rss>

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel><title>Björn I. Dahlgren's personal page (Posts about reproducible research)</title><link>http://bjodah.github.io/blog/</link><description></description><atom:link href="http://bjodah.github.io/blog/categories/reproducible-research.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Wed, 31 May 2017 13:36:32 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Reproducible research with Docker</title><link>http://bjodah.github.io/blog/posts/reproducible-research-docker.html</link><dc:creator>Björn Dahlgren</dc:creator><description>&lt;div&gt;&lt;p&gt;When I analyse data in my research I often tend to write small scripts
+for each of the steps. Those scripts often rely on 3rd party packages
+being installed. It has happened more than once that a few years down
+the road those scripts no longer work since the 3rd party package I
+was depending on changed its API. Until now I have looked at it as a
+hopeless (and time consuming) battle...&lt;/p&gt;
+&lt;div class="section" id="docker-to-the-rescue"&gt;
+&lt;h2&gt;Docker to the rescue&lt;/h2&gt;
+&lt;p&gt;&lt;a class="reference external" href="http://bjodah.github.io/blog/posts/docker.io"&gt;Docker&lt;/a&gt; is a tool which has gained a tremendous traction
+in the web community recently. However, it can also be tamed
+into a useful tool for scientific computing.&lt;/p&gt;
+&lt;p&gt;I will try to guide you through the steps necessary to set things
+up. I will assume familiarity with Linux, git, bash and basic idea of
+how Docker works.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="separate-raw-from-generated-data-input-vs-output"&gt;
+&lt;h2&gt;Separate raw from generated data (input vs. output)&lt;/h2&gt;
+&lt;p&gt;Here are a few things I found made my life much easier when trying to
+do reproducible research (based on scripts):&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;Distinguish between input and output and make sure that generated
+data is built out-of-source.&lt;/li&gt;
+&lt;li&gt;Use version control (from day one) for the input and the environment
+description.&lt;/li&gt;
+&lt;li&gt;Rebuild from scratch frequently to avoid introducing hidden
+dependencies. Preferably: for each commit on a different host
+(continuous integration)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;We will start simple with a contrived example. Say we have:&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;Some raw data of relative humidity ("rh") that is believed to be
+normally distributed.&lt;/li&gt;
+&lt;li&gt;A small Python script for calculating the mean and standard
+deviation (in reality the analysis might be something more novel).&lt;/li&gt;
+&lt;li&gt;A script for generating a "report" of said analysis.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Let's set things up from the command line:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+$ mkdir rh; cd rh
+$ mkdir input output environment
+$ echo output/ &amp;gt;.gitignore
+$ cat &amp;lt;&amp;lt;EOF &amp;gt;input/data.txt
+23.16
+22.87
+25.23
+25.01
+23.93
+24.56
+EOF
+&lt;/pre&gt;
+&lt;p&gt;OK, the data is in place, let's write a script to do the analysis:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+$ cat &amp;lt;&amp;lt;EOF &amp;gt;input/analysis.py
+&lt;/pre&gt;
+&lt;pre class="code python"&gt;&lt;a name="rest_code_c615a3df96fa4357a462b825a5ef49ca-1"&gt;&lt;/a&gt;&lt;span class="ch"&gt;#!/usr/bin/env python&lt;/span&gt;
+&lt;a name="rest_code_c615a3df96fa4357a462b825a5ef49ca-2"&gt;&lt;/a&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;np&lt;/span&gt;
+&lt;a name="rest_code_c615a3df96fa4357a462b825a5ef49ca-3"&gt;&lt;/a&gt;
+&lt;a name="rest_code_c615a3df96fa4357a462b825a5ef49ca-4"&gt;&lt;/a&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;stddev&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;srcpath&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;'data.txt'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;'{0:12.5g} {1:12.5g}'&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;a name="rest_code_c615a3df96fa4357a462b825a5ef49ca-5"&gt;&lt;/a&gt;    &lt;span class="n"&gt;arr&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;loadtxt&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;srcpath&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_c615a3df96fa4357a462b825a5ef49ca-6"&gt;&lt;/a&gt;    &lt;span class="n"&gt;avg&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;arr&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_c615a3df96fa4357a462b825a5ef49ca-7"&gt;&lt;/a&gt;    &lt;span class="n"&gt;s&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;arr&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;avg&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;arr&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;&lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="mf"&gt;0.5&lt;/span&gt;
+&lt;a name="rest_code_c615a3df96fa4357a462b825a5ef49ca-8"&gt;&lt;/a&gt;    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;avg&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_c615a3df96fa4357a462b825a5ef49ca-9"&gt;&lt;/a&gt;
+&lt;a name="rest_code_c615a3df96fa4357a462b825a5ef49ca-10"&gt;&lt;/a&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="vm"&gt;__name__&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s1"&gt;'__main__'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;a name="rest_code_c615a3df96fa4357a462b825a5ef49ca-11"&gt;&lt;/a&gt;    &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;argh&lt;/span&gt;
+&lt;a name="rest_code_c615a3df96fa4357a462b825a5ef49ca-12"&gt;&lt;/a&gt;    &lt;span class="n"&gt;argh&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;dispatch_command&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;stddev&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_c615a3df96fa4357a462b825a5ef49ca-13"&gt;&lt;/a&gt;
+&lt;a name="rest_code_c615a3df96fa4357a462b825a5ef49ca-14"&gt;&lt;/a&gt;&lt;span class="n"&gt;EOF&lt;/span&gt;
+&lt;/pre&gt;&lt;pre class="literal-block"&gt;
+$ chmod +x ./input/analysis.py
+&lt;/pre&gt;
+&lt;p&gt;Now let's write a script for generating the report.&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+$ cat &amp;lt;&amp;lt;'EOF' &amp;gt;input/generate_report.sh
+&lt;/pre&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_5efff2654f13487b96fd093d18c938f0-1"&gt;&lt;/a&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
+&lt;a name="rest_code_5efff2654f13487b96fd093d18c938f0-2"&gt;&lt;/a&gt;&lt;span class="nv"&gt;AVG&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;./analysis.py --format &lt;span class="s1"&gt;'{0:12.5g}'&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_5efff2654f13487b96fd093d18c938f0-3"&gt;&lt;/a&gt;&lt;span class="nv"&gt;DEV&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;./analysis.py --format &lt;span class="s1"&gt;'{1:12.5g}'&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_5efff2654f13487b96fd093d18c938f0-4"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"The average of the data was &lt;/span&gt;&lt;span class="nv"&gt;$AVG&lt;/span&gt;&lt;span class="s2"&gt; and the standard deviation&lt;/span&gt;
+&lt;a name="rest_code_5efff2654f13487b96fd093d18c938f0-5"&gt;&lt;/a&gt;&lt;span class="s2"&gt;was estimated to be &lt;/span&gt;&lt;span class="nv"&gt;$DEV&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&amp;gt;../output/report.txt
+&lt;a name="rest_code_5efff2654f13487b96fd093d18c938f0-6"&gt;&lt;/a&gt;EOF
+&lt;/pre&gt;&lt;pre class="literal-block"&gt;
+$ chmod +x ./input/generate_report.sh
+&lt;/pre&gt;
+&lt;p&gt;Alright, now let's try to make make this procedure reproducible by
+locking down all versions used (i.e. versions of Python, NumPy, bash).
+We will do so by relying on a specific (long term support) Linux
+distribution.&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+$ cat &amp;lt;&amp;lt;'EOF' &amp;gt;environment/Dockerfile
+&lt;/pre&gt;
+&lt;pre class="code dockerfile"&gt;&lt;a name="rest_code_d156cdaab3a84f88b053b61a4c99a994-1"&gt;&lt;/a&gt;&lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="s"&gt; ubuntu:14.04.2&lt;/span&gt;
+&lt;a name="rest_code_d156cdaab3a84f88b053b61a4c99a994-2"&gt;&lt;/a&gt;&lt;span class="k"&gt;ENV&lt;/span&gt;&lt;span class="s"&gt; DEBIAN_FRONTEND noninteractive&lt;/span&gt;
+&lt;a name="rest_code_d156cdaab3a84f88b053b61a4c99a994-3"&gt;&lt;/a&gt;
+&lt;a name="rest_code_d156cdaab3a84f88b053b61a4c99a994-4"&gt;&lt;/a&gt;&lt;span class="k"&gt;RUN&lt;/span&gt; apt-get update &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+&lt;a name="rest_code_d156cdaab3a84f88b053b61a4c99a994-5"&gt;&lt;/a&gt;    apt-get --quiet --assume-yes install &lt;span class="se"&gt;\&lt;/span&gt;
+&lt;a name="rest_code_d156cdaab3a84f88b053b61a4c99a994-6"&gt;&lt;/a&gt;    python-numpy python-argh &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+&lt;a name="rest_code_d156cdaab3a84f88b053b61a4c99a994-7"&gt;&lt;/a&gt;    apt-get clean &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+&lt;a name="rest_code_d156cdaab3a84f88b053b61a4c99a994-8"&gt;&lt;/a&gt;    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+&lt;a name="rest_code_d156cdaab3a84f88b053b61a4c99a994-9"&gt;&lt;/a&gt;EOF
+&lt;/pre&gt;&lt;p&gt;And now let's write a small script orchestrating the full process:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+$ cat &amp;lt;&amp;lt;'EOF' &amp;gt;generate_output.sh
+&lt;/pre&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_1184fb9bb72c45baaac33f1b0996ad0f-1"&gt;&lt;/a&gt;&lt;span class="ch"&gt;#!/bin/bash -x&lt;/span&gt;
+&lt;a name="rest_code_1184fb9bb72c45baaac33f1b0996ad0f-2"&gt;&lt;/a&gt;&lt;span class="nv"&gt;MY_DOCKER_IMAGE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"./environment"&lt;/span&gt;
+&lt;a name="rest_code_1184fb9bb72c45baaac33f1b0996ad0f-3"&gt;&lt;/a&gt;&lt;span class="nv"&gt;MY_HASH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;docker build &lt;span class="nv"&gt;$MY_DOCKER_IMAGE&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; tee /dev/tty &lt;span class="p"&gt;|&lt;/span&gt; tail -1 &lt;span class="p"&gt;|&lt;/span&gt; cut -d&lt;span class="s1"&gt;' '&lt;/span&gt; -f3&lt;span class="k"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_1184fb9bb72c45baaac33f1b0996ad0f-4"&gt;&lt;/a&gt;docker run --rm -v &lt;span class="k"&gt;$(&lt;/span&gt;&lt;span class="nb"&gt;pwd&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;/input:/input -v &lt;span class="k"&gt;$(&lt;/span&gt;&lt;span class="nb"&gt;pwd&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;/output:/output -w /input -i &lt;span class="nv"&gt;$MY_HASH&lt;/span&gt; ./generate_report.sh
+&lt;a name="rest_code_1184fb9bb72c45baaac33f1b0996ad0f-5"&gt;&lt;/a&gt;
+&lt;a name="rest_code_1184fb9bb72c45baaac33f1b0996ad0f-6"&gt;&lt;/a&gt;EOF
+&lt;/pre&gt;&lt;pre class="literal-block"&gt;
+$ chmod +x generate_output.sh
+&lt;/pre&gt;
+&lt;p&gt;And that's it. Obviously the relative overhead of tracking all the
+dependencies for such a small example is ridiculously high but most of
+the above code is of boiler plate character and may easily be copied
+between projects. Now let's make sure the script works (note that
+docker requires root privileges so use &lt;tt class="docutils literal"&gt;sudo&lt;/tt&gt; or add your user to
+"docker" group):&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+$ sudo ./generate_output.sh
+$ cat ./output/report.txt
+The average of the data was       24.127 and the standard deviation
+was estimated to be      0.88861
+&lt;/pre&gt;
+&lt;p&gt;Great, so this would be a good point to set up version control,
+e.g. by using git:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+$ git init .
+$ git add -A
+$ git commit -m "Initial commit"
+&lt;/pre&gt;
+&lt;p&gt;This should make the analysis reproducible for the foreseeable future
+(we are assuming that both Docker, the Ubuntu 14.04.2 image and the
+Ubuntu 14.04 package repositories will stay around indefinitely which
+probably isn't true).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="room-for-improvement"&gt;
+&lt;h2&gt;Room for improvement&lt;/h2&gt;
+&lt;p&gt;By using docker we can get more benefits for free. We can avoid
+involuntarily relying on internet access during the generation of our
+output by passing the flag &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;--net='none'&lt;/span&gt;&lt;/tt&gt; to &lt;tt class="docutils literal"&gt;docker run&lt;/tt&gt;.&lt;/p&gt;
+&lt;p&gt;We can also force the &lt;tt class="docutils literal"&gt;./input&lt;/tt&gt; directory to be read-only during the
+build process to better enforce the distinction between raw and
+generated data.&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_2aec7a2e55a3433f87ae3ae4cb513a6d-1"&gt;&lt;/a&gt;docker run --rm -v &lt;span class="k"&gt;$(&lt;/span&gt;&lt;span class="nb"&gt;pwd&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;/input:/input:ro -v &lt;span class="k"&gt;$(&lt;/span&gt;&lt;span class="nb"&gt;pwd&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;/output:/output -w /input --net&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;'none'&lt;/span&gt; -i &lt;span class="nv"&gt;$MY_DOCKER_IMAGE&lt;/span&gt; ./generate_report.sh
+&lt;/pre&gt;&lt;p&gt;One thing you will soon notice is that docker runs as UID=0 (root),
+which means that files generated in output will not be owned by your
+current user. One way to circumvent this is to have a small script in
+&lt;tt class="docutils literal"&gt;input/&lt;/tt&gt; setting the appropriate ownership after having run the
+&lt;tt class="docutils literal"&gt;./generate_report.sh&lt;/tt&gt; script. We will need to provide our preferred
+UID and GID to the docker image through the use of environment
+variables:&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_c4b0063350a545d1a902f9d9afac770a-1"&gt;&lt;/a&gt;docker run --rm -e &lt;span class="nv"&gt;HOST_UID&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;id -u&lt;span class="k"&gt;)&lt;/span&gt; -e &lt;span class="nv"&gt;HOST_GID&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;id -g&lt;span class="k"&gt;)&lt;/span&gt; -v &lt;span class="k"&gt;$(&lt;/span&gt;&lt;span class="nb"&gt;pwd&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;/input:/input:ro -v &lt;span class="k"&gt;$(&lt;/span&gt;&lt;span class="nb"&gt;pwd&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;/output:/output -w /input -i &lt;span class="nv"&gt;$MY_DOCKER_IMAGE&lt;/span&gt; ./entrypoint.sh
+&lt;/pre&gt;&lt;pre class="code bash"&gt;&lt;a name="rest_code_c57ee5620b23436fa3a75ddca52deef2-1"&gt;&lt;/a&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
+&lt;a name="rest_code_c57ee5620b23436fa3a75ddca52deef2-2"&gt;&lt;/a&gt;&lt;span class="c1"&gt;# this is entrypoint.sh&lt;/span&gt;
+&lt;a name="rest_code_c57ee5620b23436fa3a75ddca52deef2-3"&gt;&lt;/a&gt;./generate_report.sh
+&lt;a name="rest_code_c57ee5620b23436fa3a75ddca52deef2-4"&gt;&lt;/a&gt;chown -R &lt;span class="nv"&gt;$HOST_UID&lt;/span&gt;:&lt;span class="nv"&gt;$HOST_GID&lt;/span&gt; ../output
+&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="section" id="installing-latest-docker-on-ubuntu-14-04"&gt;
+&lt;h2&gt;Installing latest docker on Ubuntu 14.04&lt;/h2&gt;
+&lt;p&gt;To install the latest version of Docker in Trusty you may proceed as follows:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+$ wget -qO- https://get.docker.io/gpg | sudo apt-key add -
+$ sudo sh -c "echo deb http://get.docker.io/ubuntu docker main &amp;gt; /etc/apt/sources.list.d/docker.list"
+$ sudo apt-get update
+$ sudo apt-get install lxc-docker apparmor
+$ sudo docker -d &amp;amp;
+&lt;/pre&gt;
+&lt;/div&gt;&lt;/div&gt;</description><category>docker</category><category>reproducible research</category><guid>http://bjodah.github.io/blog/posts/reproducible-research-docker.html</guid><pubDate>Sun, 12 Apr 2015 16:05:21 GMT</pubDate></item></channel></rss>

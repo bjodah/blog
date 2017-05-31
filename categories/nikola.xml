@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel><title>Björn I. Dahlgren's personal page (Posts about nikola)</title><link>http://bjodah.github.io/blog/</link><description></description><atom:link href="http://bjodah.github.io/blog/categories/nikola.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Wed, 31 May 2017 13:36:32 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Finally a new website!</title><link>http://bjodah.github.io/blog/posts/first-post.html</link><dc:creator>Björn Dahlgren</dc:creator><description>&lt;div&gt;&lt;p&gt;I am now since a little more than two years doing a PhD in Chemistry
+with focus on radiation induced processes at the solid/water interface.&lt;/p&gt;
+&lt;p&gt;On this blog I hope to - if time permits - write about some of the
+problems of more general interest (and their solution) popping up as I
+am striving forward.&lt;/p&gt;
+&lt;p&gt;On a technical note, this blog is staticially generated using &lt;a class="reference external" href="http://www.getnikola.com/"&gt;Nikola&lt;/a&gt; (EDIT 2016-07-27: It used to be Pelican).
+The source for this site is hosted at &lt;a class="reference external" href="http://github.com/bjodah/bjodah.github.io/tree/source"&gt;github&lt;/a&gt;.&lt;/p&gt;&lt;/div&gt;</description><category>nikola</category><category>python</category><guid>http://bjodah.github.io/blog/posts/first-post.html</guid><pubDate>Sun, 29 Mar 2015 15:03:17 GMT</pubDate></item></channel></rss>

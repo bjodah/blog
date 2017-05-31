@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel><title>Björn I. Dahlgren's personal page (Posts about python)</title><link>http://bjodah.github.io/blog/</link><description></description><atom:link href="http://bjodah.github.io/blog/categories/python.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Wed, 31 May 2017 13:36:32 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Writing tests for Python</title><link>http://bjodah.github.io/blog/posts/writing-tests-for-python.html</link><dc:creator>Björn Dahlgren</dc:creator><description>&lt;div&gt;&lt;p&gt;A coworker asked me about "tests" from a programming practice perspective, "what's the big deal?".
+For me, writing tests is a very small price to pay to comfortably daring to change code without
+the fear of breaking it. Every bug I fix, even during the design phase, gives rise to at least one test.&lt;/p&gt;
+&lt;p&gt;No library or script is too small to have tests, here is a silly example (let's call it &lt;tt class="docutils literal"&gt;rootof.py&lt;/tt&gt;):&lt;/p&gt;
+&lt;pre class="code python"&gt;&lt;a name="rest_code_f0f95faa2aa945a2b6990ce8956df1d6-1"&gt;&lt;/a&gt;&lt;span class="ch"&gt;#!/usr/bin/env python&lt;/span&gt;
+&lt;a name="rest_code_f0f95faa2aa945a2b6990ce8956df1d6-2"&gt;&lt;/a&gt;
+&lt;a name="rest_code_f0f95faa2aa945a2b6990ce8956df1d6-3"&gt;&lt;/a&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;argh&lt;/span&gt;
+&lt;a name="rest_code_f0f95faa2aa945a2b6990ce8956df1d6-4"&gt;&lt;/a&gt;
+&lt;a name="rest_code_f0f95faa2aa945a2b6990ce8956df1d6-5"&gt;&lt;/a&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;root_of&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;number&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;1.0&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;a name="rest_code_f0f95faa2aa945a2b6990ce8956df1d6-6"&gt;&lt;/a&gt;    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;number&lt;/span&gt;&lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="mf"&gt;0.5&lt;/span&gt;
+&lt;a name="rest_code_f0f95faa2aa945a2b6990ce8956df1d6-7"&gt;&lt;/a&gt;
+&lt;a name="rest_code_f0f95faa2aa945a2b6990ce8956df1d6-8"&gt;&lt;/a&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;test_root_of&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+&lt;a name="rest_code_f0f95faa2aa945a2b6990ce8956df1d6-9"&gt;&lt;/a&gt;    &lt;span class="k"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;root_of&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;
+&lt;a name="rest_code_f0f95faa2aa945a2b6990ce8956df1d6-10"&gt;&lt;/a&gt;    &lt;span class="k"&gt;assert&lt;/span&gt; &lt;span class="nb"&gt;abs&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;root_of&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="mf"&gt;1.4142&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mf"&gt;1e-4&lt;/span&gt;
+&lt;a name="rest_code_f0f95faa2aa945a2b6990ce8956df1d6-11"&gt;&lt;/a&gt;
+&lt;a name="rest_code_f0f95faa2aa945a2b6990ce8956df1d6-12"&gt;&lt;/a&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="vm"&gt;__name__&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s1"&gt;'__main__'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;a name="rest_code_f0f95faa2aa945a2b6990ce8956df1d6-13"&gt;&lt;/a&gt;    &lt;span class="n"&gt;argh&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;dispatch_command&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;root_of&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;p&gt;The example is so short it's silly, but the point is that each time you edit &lt;tt class="docutils literal"&gt;rootof.py&lt;/tt&gt; you
+should run&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_2f067a807837432cb6c5a5dad58adfc5-1"&gt;&lt;/a&gt;$ python -m pytest rootof.py
+&lt;/pre&gt;&lt;p&gt;which should exit without errors. That's pretty much the gist of it. Happy testing!&lt;/p&gt;
+&lt;p&gt;P.S. if you don't have &lt;tt class="docutils literal"&gt;argh&lt;/tt&gt; just install it by typing:&lt;/p&gt;
+&lt;pre class="code bash"&gt;&lt;a name="rest_code_3f6235b16e3246638f95818e0732602d-1"&gt;&lt;/a&gt;$ python -m pip install --user argh
+&lt;/pre&gt;&lt;p&gt;P.P.S if you don't have &lt;tt class="docutils literal"&gt;pip&lt;/tt&gt;: see &lt;a class="reference external" href="https://pip.pypa.io/en/stable/installing/"&gt;this&lt;/a&gt;.&lt;/p&gt;&lt;/div&gt;</description><category>python</category><guid>http://bjodah.github.io/blog/posts/writing-tests-for-python.html</guid><pubDate>Tue, 17 Jan 2017 23:13:33 GMT</pubDate></item><item><title>Finally a new website!</title><link>http://bjodah.github.io/blog/posts/first-post.html</link><dc:creator>Björn Dahlgren</dc:creator><description>&lt;div&gt;&lt;p&gt;I am now since a little more than two years doing a PhD in Chemistry
+with focus on radiation induced processes at the solid/water interface.&lt;/p&gt;
+&lt;p&gt;On this blog I hope to - if time permits - write about some of the
+problems of more general interest (and their solution) popping up as I
+am striving forward.&lt;/p&gt;
+&lt;p&gt;On a technical note, this blog is staticially generated using &lt;a class="reference external" href="http://www.getnikola.com/"&gt;Nikola&lt;/a&gt; (EDIT 2016-07-27: It used to be Pelican).
+The source for this site is hosted at &lt;a class="reference external" href="http://github.com/bjodah/bjodah.github.io/tree/source"&gt;github&lt;/a&gt;.&lt;/p&gt;&lt;/div&gt;</description><category>nikola</category><category>python</category><guid>http://bjodah.github.io/blog/posts/first-post.html</guid><pubDate>Sun, 29 Mar 2015 15:03:17 GMT</pubDate></item></channel></rss>
