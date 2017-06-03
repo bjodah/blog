@@ -1,0 +1,52 @@
+.. title: A summer of code and mathematics
+.. slug: gsoc-week1
+.. date: 2017-06-03 15:10:00 UTC+02:00
+.. tags: python sympy
+.. category: 
+.. link: 
+.. description: First week of GSoC.
+.. type: text
+
+Google are generously funding work on selected open-source projects each year through the
+`Google Summer of Code <https://summerofcode.withgoogle.com/>`_ project. The project allows
+under- and post-graduate students around the world to apply to mentoring organizations for
+a scholarship to work on a project during the summer. This spring I made the leap, I wrote
+a `proposal <https://github.com/sympy/sympy/wiki/GSoC-2017-Application-Bj%C3%B6rn-Dahlgren:-Improved-code-generation-facilities>`_, got accepted, and I am now working full time for the duration of this summer
+on one of these projects.
+
+Since a few years I've been contributing code to the open-source project
+`SymPy <https://www.sympy.org>`_. SymPy is a so-called "computer algebra system",
+which let's you manipulate mathematical expressions symbolically. I've used this
+software package extensively in my own doctoral studies and it has been really useful.
+
+My research involves formulating mathematical models to: rationalize experimental observations,
+fit parameters or aid in design of experiments. Traditionally one sits down and derive equations,
+often using pen & paper, then one writes computer code which implements said model, and finally
+one writes a paper with the same formulas as LaTeX code (or something simliar).
+Note how this procedure involves writing the same equations essentially three times,
+during derivation, coding and finally the article.
+
+By using SymPy I can, from a single source:
+
+1. Do the derivations (fewer hard-to-find mistakes)
+2. Generate the numerical code (blazing fast computer progam)
+3. Output LaTeX formatted equations (pretty formulas for the report)
+
+A very attractive side-effect of this is that one truly get reproducible research
+(reproducibility is one of the pillars in science). Every step of the process is
+self-documented, and because SymPy is free software: *anyone* can redo them. I
+can't stress enough how big this truly is.
+
+For this work-flow to work in practice the capabilities of the computer algebra system
+need to be quite extensive, and it is here my current project with SymPy comes in.
+During this spring I felt that I had several ideas on how to improve capability number
+two listed above: generating the numerical code.
+
+First week
+----------
+The majority of the first week has been spent on introducing type-awareness into
+the code-printers. SymPy has printer-classes which specialize printing of e.g.
+strings, C code, Fortran code etc. Up to now there has been no way to indicate
+what precision the generated code should be for. The default floating point type
+in python is for example "double precision" (i.e. 64-bit binary IEEE 754 floating
+point). This is also the default precision targeted by the code printers.
