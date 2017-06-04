@@ -1,6 +1,6 @@
 .. title: Finally a new website!
 .. date: 2015-03-29 16:03:17 UTC+01:00
-.. tags: nikola, python
+.. tags: nikola, Python
 .. slug: first-post
 
 I am now since a little more than two years doing a PhD in Chemistry
