@@ -16,7 +16,7 @@
 <meta name="generator" content="Nikola (getnikola.com)">
 <link rel="alternate" type="application/rss+xml" title="RSS" href="rss.xml">
 <link rel="canonical" href="http://bjodah.github.io/blog/index.html">
-<!--[if lt IE 9]><script src="assets/js/html5.js"></script><![endif]--><link rel="prefetch" href="posts/writing-tests-for-python.html" type="text/html">
+<!--[if lt IE 9]><script src="assets/js/html5.js"></script><![endif]--><link rel="prefetch" href="posts/gsoc-week1.html" type="text/html">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -66,7 +66,103 @@
 
     
 <div class="postindex">
-    <article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/writing-tests-for-python.html" class="u-url">Writing tests for Python</a></h1>
+    <article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/gsoc-week1.html" class="u-url">A summer of code and mathematics</a></h1>
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                Björn Dahlgren
+            </span></p>
+            <p class="dateline"><a href="posts/gsoc-week1.html" rel="bookmark"><time class="published dt-published" datetime="2017-06-03T15:10:00+02:00" title="2017-06-03 15:10">2017-06-03 15:10</time></a></p>
+                <p class="commentline">
+        
+    <a href="posts/gsoc-week1.html#disqus_thread" data-disqus-identifier="cache/posts/170603-gsoc-w1.html">Comments</a>
+
+
+        </p>
+</div>
+    </header><div class="e-content entry-content">
+    <div>
+<p>Google are generously funding work on selected <a class="reference external" href="https://en.wikipedia.org/wiki/Open-source_software">open source</a> projects each
+year through the <a class="reference external" href="https://summerofcode.withgoogle.com/">Google Summer of Code</a> project. The project allows
+under- and post-graduate students around the world to apply to
+mentoring organizations for a scholarship to work on a project during
+the summer. This spring I made the leap, I wrote a <a class="reference external" href="https://github.com/sympy/sympy/wiki/GSoC-2017-Application-Bj%C3%B6rn-Dahlgren:-Improved-code-generation-facilities">proposal</a> which
+got accepted, and I am now working full time for the duration of this
+summer on one of these projects. In this blog post I'll give some
+background and tell you about the first project week.</p>
+<div class="section" id="background">
+<h2>Background</h2>
+<p>Since a few years I've been contributing code to the open-source project
+<a class="reference external" href="http://www.sympy.org">SymPy</a>. SymPy is a so-called "computer algebra system",
+which lets you manipulate mathematical expressions symbolically. I've used this
+software package extensively in my own doctoral studies and it has been really useful.</p>
+<p>My research involves formulating mathematical models to: rationalize experimental observations,
+fit parameters or aid in design of experiments. Traditionally one sits down and derive equations,
+often using pen &amp; paper, then one writes computer code which implements said model, and finally
+one writes a paper with the same formulas as LaTeX code (or something similar).
+Note how this procedure involves writing the same equations essentially three times,
+during derivation, coding and finally the article.</p>
+<p>By using SymPy I can, from a single source:</p>
+<ol class="arabic simple">
+<li>Do the derivations (fewer hard-to-find mistakes)</li>
+<li>Generate the numerical code (a blazing fast computer program)</li>
+<li>Output LaTeX formatted equations (pretty formulas for the report)</li>
+</ol>
+<p>A very attractive side-effect of this is that one truly get reproducible research
+(reproducibility is one of the pillars in science). Every step of the process is
+self-documented, and because SymPy is free software: <em>anyone</em> can redo them. I
+can't stress enough how big this truly is. It is also the main
+motivation why I haven't used proprietary software in place of SymPy,
+even though that software may be considerably more feature complete
+than SymPy, any code I wrote for it would be inaccessible to people
+without a license (possibly even including myself if I leave academia).</p>
+<p>For this work-flow to work in practice the capabilities of the computer algebra system
+need to be quite extensive, and it is here my current project with SymPy comes in.
+I have had several ideas on how to improve capability number two
+listed above: generating the numerical code, and now I get the chance
+to realize some of them and work with the community to improve SymPy.</p>
+</div>
+<div class="section" id="first-week">
+<h2>First week</h2>
+<p>The majority of the first week has been spent on introducing type-awareness into
+the code-printers. SymPy has printer-classes which specialize printing of e.g.
+strings, C code, Fortran code etc. Up to now there has been no way to indicate
+what precision the generated code should be for. The default floating point type
+in python is for example "double precision" (i.e. 64-bit binary IEEE 754 floating
+point). This is also the default precision targeted by the code
+printers.</p>
+<p>However, there are occasions where one want to use another
+precision. For example, consumer class graphics cards which are
+ubiquitous often have excellent single precision performance, but are
+intentionally capped with respect to double precision arithmetic (due
+to marketing reasons). At other times, one want just a bit of extra
+precision and extended precision (80-bit floating point, usually the
+data type of C's <tt class="docutils literal">long double</tt>) is just what's needed to compute
+some values with the required precision. In C, the <a class="reference external" href="http://en.cppreference.com/w/c/numeric/math">corresponding math functions</a> are standardized since
+C99.</p>
+<p>I have started the work to enable the code printers to print this in a
+<a class="reference external" href="https://github.com/sympy/sympy/pull/12693">pull-request</a> to the
+SymPy source repository. I have also started experimenting with a
+class representing arrays. Arrays</p>
+<p>The first weekly meeting with <a class="reference external" href="http://asmeurer.com">Aaron Meurer</a> went well and we also briefly
+discussed how to reach out to the SymPy community for wishes on what
+code-generation functions to provide, I've set up a wiki-page for it
+under the SymPy projects wiki:</p>
+<p><a class="reference external" href="https://github.com/sympy/sympy/wiki/codegen-gsoc17">https://github.com/sympy/sympy/wiki/codegen-gsoc17</a></p>
+<p>I'll be sending out an email to the <a class="reference external" href="https://groups.google.com/forum/#!forum/sympy">mailing list for SymPy</a> asking for feedback.</p>
+<p>We also discussed the upcoming SciPy 2017 conference where Aaron
+Meurer and <a class="reference external" href="http://www.moorepants.info/">Jason Moore</a> will be giving
+a tutorial on code-generation with SymPy. They've asked me to join
+forces with them and I've happily accepted that offer and am looking
+forward to working on the tutorial material and teaching fellow
+developers and researchers in the scientific python community about
+how to leverage SymPy for code generation.</p>
+<p>Next blog post will most likely be a bit more technical, but I thought
+it was important to give some background on what motivates this effort
+and what the goal is.</p>
+</div>
+</div>
+    </div>
+    </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/writing-tests-for-python.html" class="u-url">Writing tests for Python</a></h1>
         <div class="metadata">
             <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
                 Björn Dahlgren
@@ -85,27 +181,27 @@
 For me, writing tests is a very small price to pay to comfortably daring to change code without
 the fear of breaking it. Every bug I fix, even during the design phase, gives rise to at least one test.</p>
 <p>No library or script is too small to have tests, here is a silly example (let's call it <tt class="docutils literal">rootof.py</tt>):</p>
-<pre class="code python"><a name="rest_code_f0f95faa2aa945a2b6990ce8956df1d6-1"></a><span class="ch">#!/usr/bin/env python</span>
-<a name="rest_code_f0f95faa2aa945a2b6990ce8956df1d6-2"></a>
-<a name="rest_code_f0f95faa2aa945a2b6990ce8956df1d6-3"></a><span class="kn">import</span> <span class="nn">argh</span>
-<a name="rest_code_f0f95faa2aa945a2b6990ce8956df1d6-4"></a>
-<a name="rest_code_f0f95faa2aa945a2b6990ce8956df1d6-5"></a><span class="k">def</span> <span class="nf">root_of</span><span class="p">(</span><span class="n">number</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
-<a name="rest_code_f0f95faa2aa945a2b6990ce8956df1d6-6"></a>    <span class="k">return</span> <span class="n">number</span><span class="o">**</span><span class="mf">0.5</span>
-<a name="rest_code_f0f95faa2aa945a2b6990ce8956df1d6-7"></a>
-<a name="rest_code_f0f95faa2aa945a2b6990ce8956df1d6-8"></a><span class="k">def</span> <span class="nf">test_root_of</span><span class="p">():</span>
-<a name="rest_code_f0f95faa2aa945a2b6990ce8956df1d6-9"></a>    <span class="k">assert</span> <span class="n">root_of</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
-<a name="rest_code_f0f95faa2aa945a2b6990ce8956df1d6-10"></a>    <span class="k">assert</span> <span class="nb">abs</span><span class="p">(</span><span class="n">root_of</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1.4142</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-4</span>
-<a name="rest_code_f0f95faa2aa945a2b6990ce8956df1d6-11"></a>
-<a name="rest_code_f0f95faa2aa945a2b6990ce8956df1d6-12"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
-<a name="rest_code_f0f95faa2aa945a2b6990ce8956df1d6-13"></a>    <span class="n">argh</span><span class="o">.</span><span class="n">dispatch_command</span><span class="p">(</span><span class="n">root_of</span><span class="p">)</span>
+<pre class="code python"><a name="rest_code_1f66c939a3944149b939ebe8bd546915-1"></a><span class="ch">#!/usr/bin/env python</span>
+<a name="rest_code_1f66c939a3944149b939ebe8bd546915-2"></a>
+<a name="rest_code_1f66c939a3944149b939ebe8bd546915-3"></a><span class="kn">import</span> <span class="nn">argh</span>
+<a name="rest_code_1f66c939a3944149b939ebe8bd546915-4"></a>
+<a name="rest_code_1f66c939a3944149b939ebe8bd546915-5"></a><span class="k">def</span> <span class="nf">root_of</span><span class="p">(</span><span class="n">number</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+<a name="rest_code_1f66c939a3944149b939ebe8bd546915-6"></a>    <span class="k">return</span> <span class="n">number</span><span class="o">**</span><span class="mf">0.5</span>
+<a name="rest_code_1f66c939a3944149b939ebe8bd546915-7"></a>
+<a name="rest_code_1f66c939a3944149b939ebe8bd546915-8"></a><span class="k">def</span> <span class="nf">test_root_of</span><span class="p">():</span>
+<a name="rest_code_1f66c939a3944149b939ebe8bd546915-9"></a>    <span class="k">assert</span> <span class="n">root_of</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+<a name="rest_code_1f66c939a3944149b939ebe8bd546915-10"></a>    <span class="k">assert</span> <span class="nb">abs</span><span class="p">(</span><span class="n">root_of</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1.4142</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-4</span>
+<a name="rest_code_1f66c939a3944149b939ebe8bd546915-11"></a>
+<a name="rest_code_1f66c939a3944149b939ebe8bd546915-12"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
+<a name="rest_code_1f66c939a3944149b939ebe8bd546915-13"></a>    <span class="n">argh</span><span class="o">.</span><span class="n">dispatch_command</span><span class="p">(</span><span class="n">root_of</span><span class="p">)</span>
 </pre>
 <p>The example is so short it's silly, but the point is that each time you edit <tt class="docutils literal">rootof.py</tt> you
 should run</p>
-<pre class="code bash"><a name="rest_code_2f067a807837432cb6c5a5dad58adfc5-1"></a>$ python -m pytest rootof.py
+<pre class="code bash"><a name="rest_code_86ac70335e294f61b718aad2ccf19a1b-1"></a>$ python -m pytest rootof.py
 </pre>
 <p>which should exit without errors. That's pretty much the gist of it. Happy testing!</p>
 <p>P.S. if you don't have <tt class="docutils literal">argh</tt> just install it by typing:</p>
-<pre class="code bash"><a name="rest_code_3f6235b16e3246638f95818e0732602d-1"></a>$ python -m pip install --user argh
+<pre class="code bash"><a name="rest_code_7088ab25c4c04198a83f942560a86de0-1"></a>$ python -m pip install --user argh
 </pre>
 <p>P.P.S if you don't have <tt class="docutils literal">pip</tt>: see <a class="reference external" href="https://pip.pypa.io/en/stable/installing/">this</a>.</p>
 </div>

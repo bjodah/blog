@@ -7,7 +7,7 @@
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <url>
   <loc>http://bjodah.github.io/blog/2015/index.html</loc>
-  <lastmod>2017-05-31T13:36:00Z</lastmod>
+  <lastmod>2017-06-04T16:03:00Z</lastmod>
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/2016/index.html</loc>
@@ -15,11 +15,11 @@
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/2017/index.html</loc>
-  <lastmod>2017-05-31T13:36:00Z</lastmod>
+  <lastmod>2017-06-04T16:03:00Z</lastmod>
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/archive.html</loc>
-  <lastmod>2017-05-31T13:36:00Z</lastmod>
+  <lastmod>2017-06-04T16:03:00Z</lastmod>
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/categories/bash.html</loc>
@@ -31,23 +31,27 @@
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/categories/index.html</loc>
-  <lastmod>2017-05-31T13:36:00Z</lastmod>
+  <lastmod>2017-06-04T16:03:00Z</lastmod>
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/categories/nikola.html</loc>
-  <lastmod>2017-05-31T13:36:00Z</lastmod>
+  <lastmod>2017-06-04T16:03:00Z</lastmod>
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/categories/python.html</loc>
-  <lastmod>2017-05-31T13:36:00Z</lastmod>
+  <lastmod>2017-06-04T16:03:00Z</lastmod>
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/categories/reproducible-research.html</loc>
   <lastmod>2017-05-31T13:36:00Z</lastmod>
  </url>
  <url>
+  <loc>http://bjodah.github.io/blog/categories/sympy.html</loc>
+  <lastmod>2017-06-04T16:03:00Z</lastmod>
+ </url>
+ <url>
   <loc>http://bjodah.github.io/blog/index.html</loc>
-  <lastmod>2017-05-31T13:36:00Z</lastmod>
+  <lastmod>2017-06-04T16:03:00Z</lastmod>
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/pages/index.html</loc>
@@ -67,7 +71,11 @@
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/posts/first-post.html</loc>
-  <lastmod>2017-05-31T13:36:00Z</lastmod>
+  <lastmod>2017-06-04T16:03:00Z</lastmod>
+ </url>
+ <url>
+  <loc>http://bjodah.github.io/blog/posts/gsoc-week1.html</loc>
+  <lastmod>2017-06-04T16:03:00Z</lastmod>
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/posts/reproducible-research-docker.html</loc>
@@ -75,6 +83,6 @@
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/posts/writing-tests-for-python.html</loc>
-  <lastmod>2017-05-31T13:36:00Z</lastmod>
+  <lastmod>2017-06-04T16:03:00Z</lastmod>
  </url>
 </urlset>

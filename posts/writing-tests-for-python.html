@@ -17,6 +17,7 @@
 <link rel="canonical" href="http://bjodah.github.io/blog/posts/writing-tests-for-python.html">
 <!--[if lt IE 9]><script src="../assets/js/html5.js"></script><![endif]--><meta name="author" content="Björn Dahlgren">
 <link rel="prev" href="bateman-equation.html" title="Linear decay chains and the Bateman equation" type="text/html">
+<link rel="next" href="gsoc-week1.html" title="A summer of code and mathematics" type="text/html">
 <meta property="og:site_name" content="Björn I. Dahlgren's personal page">
 <meta property="og:title" content="Writing tests for Python">
 <meta property="og:url" content="http://bjodah.github.io/blog/posts/writing-tests-for-python.html">
@@ -25,7 +26,7 @@ For me, writing tests is a very small price to pay to comfortably daring to chan
 the f">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2017-01-18T00:13:33+01:00">
-<meta property="article:tag" content="python">
+<meta property="article:tag" content="Python">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -103,37 +104,40 @@ the f">
 For me, writing tests is a very small price to pay to comfortably daring to change code without
 the fear of breaking it. Every bug I fix, even during the design phase, gives rise to at least one test.</p>
 <p>No library or script is too small to have tests, here is a silly example (let's call it <tt class="docutils literal">rootof.py</tt>):</p>
-<pre class="code python"><a name="rest_code_f0f95faa2aa945a2b6990ce8956df1d6-1"></a><span class="ch">#!/usr/bin/env python</span>
-<a name="rest_code_f0f95faa2aa945a2b6990ce8956df1d6-2"></a>
-<a name="rest_code_f0f95faa2aa945a2b6990ce8956df1d6-3"></a><span class="kn">import</span> <span class="nn">argh</span>
-<a name="rest_code_f0f95faa2aa945a2b6990ce8956df1d6-4"></a>
-<a name="rest_code_f0f95faa2aa945a2b6990ce8956df1d6-5"></a><span class="k">def</span> <span class="nf">root_of</span><span class="p">(</span><span class="n">number</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
-<a name="rest_code_f0f95faa2aa945a2b6990ce8956df1d6-6"></a>    <span class="k">return</span> <span class="n">number</span><span class="o">**</span><span class="mf">0.5</span>
-<a name="rest_code_f0f95faa2aa945a2b6990ce8956df1d6-7"></a>
-<a name="rest_code_f0f95faa2aa945a2b6990ce8956df1d6-8"></a><span class="k">def</span> <span class="nf">test_root_of</span><span class="p">():</span>
-<a name="rest_code_f0f95faa2aa945a2b6990ce8956df1d6-9"></a>    <span class="k">assert</span> <span class="n">root_of</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
-<a name="rest_code_f0f95faa2aa945a2b6990ce8956df1d6-10"></a>    <span class="k">assert</span> <span class="nb">abs</span><span class="p">(</span><span class="n">root_of</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1.4142</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-4</span>
-<a name="rest_code_f0f95faa2aa945a2b6990ce8956df1d6-11"></a>
-<a name="rest_code_f0f95faa2aa945a2b6990ce8956df1d6-12"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
-<a name="rest_code_f0f95faa2aa945a2b6990ce8956df1d6-13"></a>    <span class="n">argh</span><span class="o">.</span><span class="n">dispatch_command</span><span class="p">(</span><span class="n">root_of</span><span class="p">)</span>
+<pre class="code python"><a name="rest_code_1f66c939a3944149b939ebe8bd546915-1"></a><span class="ch">#!/usr/bin/env python</span>
+<a name="rest_code_1f66c939a3944149b939ebe8bd546915-2"></a>
+<a name="rest_code_1f66c939a3944149b939ebe8bd546915-3"></a><span class="kn">import</span> <span class="nn">argh</span>
+<a name="rest_code_1f66c939a3944149b939ebe8bd546915-4"></a>
+<a name="rest_code_1f66c939a3944149b939ebe8bd546915-5"></a><span class="k">def</span> <span class="nf">root_of</span><span class="p">(</span><span class="n">number</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+<a name="rest_code_1f66c939a3944149b939ebe8bd546915-6"></a>    <span class="k">return</span> <span class="n">number</span><span class="o">**</span><span class="mf">0.5</span>
+<a name="rest_code_1f66c939a3944149b939ebe8bd546915-7"></a>
+<a name="rest_code_1f66c939a3944149b939ebe8bd546915-8"></a><span class="k">def</span> <span class="nf">test_root_of</span><span class="p">():</span>
+<a name="rest_code_1f66c939a3944149b939ebe8bd546915-9"></a>    <span class="k">assert</span> <span class="n">root_of</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+<a name="rest_code_1f66c939a3944149b939ebe8bd546915-10"></a>    <span class="k">assert</span> <span class="nb">abs</span><span class="p">(</span><span class="n">root_of</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1.4142</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-4</span>
+<a name="rest_code_1f66c939a3944149b939ebe8bd546915-11"></a>
+<a name="rest_code_1f66c939a3944149b939ebe8bd546915-12"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
+<a name="rest_code_1f66c939a3944149b939ebe8bd546915-13"></a>    <span class="n">argh</span><span class="o">.</span><span class="n">dispatch_command</span><span class="p">(</span><span class="n">root_of</span><span class="p">)</span>
 </pre>
 <p>The example is so short it's silly, but the point is that each time you edit <tt class="docutils literal">rootof.py</tt> you
 should run</p>
-<pre class="code bash"><a name="rest_code_2f067a807837432cb6c5a5dad58adfc5-1"></a>$ python -m pytest rootof.py
+<pre class="code bash"><a name="rest_code_86ac70335e294f61b718aad2ccf19a1b-1"></a>$ python -m pytest rootof.py
 </pre>
 <p>which should exit without errors. That's pretty much the gist of it. Happy testing!</p>
 <p>P.S. if you don't have <tt class="docutils literal">argh</tt> just install it by typing:</p>
-<pre class="code bash"><a name="rest_code_3f6235b16e3246638f95818e0732602d-1"></a>$ python -m pip install --user argh
+<pre class="code bash"><a name="rest_code_7088ab25c4c04198a83f942560a86de0-1"></a>$ python -m pip install --user argh
 </pre>
 <p>P.P.S if you don't have <tt class="docutils literal">pip</tt>: see <a class="reference external" href="https://pip.pypa.io/en/stable/installing/">this</a>.</p>
 </div>
     </div>
     <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
-<li><a class="tag p-category" href="../categories/python.html" rel="tag">python</a></li>
+<li><a class="tag p-category" href="../categories/python.html" rel="tag">Python</a></li>
         </ul>
 <ul class="pager hidden-print">
 <li class="previous">
                 <a href="bateman-equation.html" rel="prev" title="Linear decay chains and the Bateman equation">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="gsoc-week1.html" rel="next" title="A summer of code and mathematics">Next post</a>
             </li>
         </ul></nav></aside><section class="comments hidden-print"><h2>Comments</h2>
         
