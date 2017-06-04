@@ -1,17 +1,18 @@
 build:
   image: bjodah/bjodahimg16:v1.2
   commands:
-    - if [ $CI_BRANCH != "master" ]; then sed -i.bak "s/bjodah.github.io\//hera.physchem.kth.se\/\~bjodah-github-io\/$CI_BRANCH\//" conf.py; fi
+    - if [ $CI_BRANCH != "master" ]; then sed -i.bak "s/bjodah.github.io\//hera.physchem.kth.se\/\~blog\/$CI_BRANCH\//" conf.py; fi
     - nikola build
-    - mkdir deploy
-    - cp -r output/ deploy/$CI_BRANCH
+    - mkdir -p deploy/$CI_BRANCH/blog/
+    - cp -r output/. deploy/$CI_BRANCH/blog/.
+    - if [ $CI_BRANCH != "master" ]; then echo -e "User-agent: *\nDisallow: /\n">deploy/$CI_BRANCH/blog/robots.txt
 
 
 deploy:
 
   rsync:
     host: hera.physchem.kth.se
-    user: bjodah-github-io
+    user: blog
     port: 22
     source: deploy/
     target: ~/public_html

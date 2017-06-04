@@ -1,7 +1,7 @@
 .. title: Writing tests for Python
 .. slug: writing-tests-for-python
 .. date: 2017-01-18 00:13:33 UTC+01:00
-.. tags: python
+.. tags: Python
 .. category: 
 .. link: 
 .. description: 
