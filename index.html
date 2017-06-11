@@ -16,7 +16,7 @@
 <meta name="generator" content="Nikola (getnikola.com)">
 <link rel="alternate" type="application/rss+xml" title="RSS" href="rss.xml">
 <link rel="canonical" href="http://bjodah.github.io/blog/index.html">
-<!--[if lt IE 9]><script src="assets/js/html5.js"></script><![endif]--><link rel="prefetch" href="posts/gsoc-week1.html" type="text/html">
+<!--[if lt IE 9]><script src="assets/js/html5.js"></script><![endif]--><link rel="prefetch" href="posts/gsoc-week2.html" type="text/html">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -66,7 +66,135 @@
 
     
 <div class="postindex">
-    <article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/gsoc-week1.html" class="u-url">A summer of code and mathematics</a></h1>
+    <article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/gsoc-week2.html" class="u-url">Status update week 2 GSoC</a></h1>
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                Björn Dahlgren
+            </span></p>
+            <p class="dateline"><a href="posts/gsoc-week2.html" rel="bookmark"><time class="published dt-published" datetime="2017-06-11T23:37:00+02:00" title="2017-06-11 23:37">2017-06-11 23:37</time></a></p>
+                <p class="commentline">
+        
+    <a href="posts/gsoc-week2.html#disqus_thread" data-disqus-identifier="cache/posts/170611-gsoc-w2.html">Comments</a>
+
+
+        </p>
+</div>
+    </header><div class="e-content entry-content">
+    <div>
+<p>I have spent the second week of Google Summer of Code on essentially two things:</p>
+<ol class="arabic simple">
+<li>Continued work on type awareness in the code printers (<tt class="docutils literal">CCodePrinter</tt> and
+<tt class="docutils literal">FCodePrinter</tt>). The work is ongoing in <a class="reference external" href="https://github.com/sympy/sympy/pull/12693">gh-12693</a>.</li>
+<li>Writing tutorial <a class="reference external" href="https://github.com/sympy/scipy-2017-codegen-tutorial">code</a> on code-generation in the form of jupyter notebooks for the
+upcoming SciPy 2017 <a class="reference external" href="https://scipy2017.scipy.org/ehome/220975/493418/">conference</a>.</li>
+</ol>
+<div class="section" id="precision-aware-code-printers">
+<h2>Precision aware code printers</h2>
+<p>After my weekly mentor meeting, we decided to take another approach to
+how we are going to represent <tt class="docutils literal">Variable</tt> instances in the
+<tt class="docutils literal">.codegen.ast</tt> module. Previously I had proposed to use quite a
+number of arguments (stored in <tt class="docutils literal">.args</tt> since it inherits
+<tt class="docutils literal">Basic</tt>). Aaron suggested we might want to represent that underlying
+information differently. After some discussion we came to the
+conclusion that we could introduce a <tt class="docutils literal">Attribute</tt> class (inhereting
+from <tt class="docutils literal">Symbol</tt>) to describe things such as value const-ness, and
+pointer const-ness (those two are available as <tt class="docutils literal">value_const</tt> and
+<tt class="docutils literal">pointer_const</tt>). Attributes will be stored in a <tt class="docutils literal">FiniteSet</tt>
+(essentially SymPy version of <tt class="docutils literal">set</tt>) and the instances we provide as
+"pre-made" in the <tt class="docutils literal">.codegen.ast</tt> module will be supported by the
+printers by default. Here is some example code showing what the
+current proposed API looks like (for C99):</p>
+<pre class="literal-block">
+&gt;&gt;&gt; u = symbols('u', real=True)
+&gt;&gt;&gt; ptr = Pointer.deduced(u, {pointer_const, restrict})
+&gt;&gt;&gt; ccode(Declaration(ptr))
+'double * const restrict u;'
+</pre>
+<p>and for Fortran:</p>
+<pre class="literal-block">
+&gt;&gt;&gt; vx = Variable(Symbol('x'), {value_const}, float32)
+&gt;&gt;&gt; fcode(Declaration(vx, 42))
+'real(4), parameter :: x = 42'
+</pre>
+<p>The C code printer can now also print code using different math functions depending
+on the targeted precision (functions guaranteed to be present in the C99 stanard):</p>
+<pre class="literal-block">
+&gt;&gt;&gt; ccode(x**3.7, standard='c99', precision=float32)
+'powf(x, 3.7F)'
+&gt;&gt;&gt; ccode(exp(x/2), standard='c99', precision=float80)
+'expl((1.0L/2.0L)*x)'
+</pre>
+</div>
+<div class="section" id="tutorial-material-for-code-generation">
+<h2>Tutorial material for code generation</h2>
+<p>Aaron, Jason and I have been discussing what examples to use for the
+tutorial on code generation with SymPy. Right now we are aiming to use
+quite a few examples from chemistry actually, and more specifically
+<a class="reference external" href="https://en.wikipedia.org/wiki/Chemical_kinetics">chemical kinetics</a>. This is the
+precise application which got me started using SymPy for
+code-generation, so it lies close to my heart (I do extensive modeling
+of chemical kinetics in my PhD studies).</p>
+<p>Working on the tutorial material has already been really helpful for
+getting insight in development needs for the exisiting classes and
+functions used for code-generation. I was hoping to use <tt class="docutils literal">autowrap</tt>
+from the <tt class="docutils literal">.utilities</tt> module. Unfortunately I found that it was not
+flexible enough to be useful for integration of systems of ODEs (where
+we need to evaluate a vector-valued function taking a vector as
+input). I did attempt to subclass the <tt class="docutils literal">CodeWrapper</tt> class to allow
+me to do this. But personally I found those classes to be quite hard to
+extend (much unlike the printers which I've often found to be
+intuitive).</p>
+<p>My current plan for the chemical kinetics case is to first solve it
+using <tt class="docutils literal">sympy.lambdify</tt>.  That allows for quick prototyping, and
+unless one has very high demands with respect to performance, it is
+usually good enough.</p>
+<p>The next step is to generate a native callback (it was here I was
+hoping to use <tt class="docutils literal">autowrap</tt> with the Cython backend). The current
+approach is to write the expressions as Cython code using a template.
+Cython conveniently follows Python syntax, and hence the string
+printer can be used for the code generation. Doing this speeds up the
+integration considerably. At this point the bottleneck is going back and
+forth through the Python layer.</p>
+<p>So in order to speed up the integration further, we need to bypass
+Python during integration (and let the solver call the user
+provided callbacks without going through the interpreter). I did
+this by providing a C-code template which relies on <tt class="docutils literal">CVode</tt> from the
+<a class="reference external" href="https://computation.llnl.gov/projects/sundials">Sundials</a> suite of
+non-linear solvers. It is a well established solver and is already
+available for Linux, Mac &amp; Windows under conda from the
+<tt class="docutils literal"><span class="pre">conda-forge</span></tt> channel. I then provide a thin Cython wrapper, calling
+into the C-function, which:</p>
+<ol class="arabic simple">
+<li>sets up the CVode solver</li>
+<li>runs the integration</li>
+<li>records some statistics</li>
+</ol>
+<p>Using native code does come at a cost. One of the strengths of Python
+is that it is cross-platform. It (usually) does not matter if your
+Python application runs on Linux, OSX or Windows (or any other
+supported operating system). However, since we are doing
+code-generation, we are relying on compilers provided by the
+respective platform. Since we want to support both Python 2 &amp; Python 3
+on said three platforms, there are quite a few combinations to cover.
+That meant quite a few surprises (I now know for example that MS
+Visual C++ 2008 does not support C99), but thanks to the kind <a class="reference external" href="https://github.com/sympy/scipy-2017-codegen-tutorial/issues/2#issuecomment-307538308">help</a> of
+<a class="reference external" href="https://github.com/isuruf">Isuru Fernando</a> I think I will manage to
+have all platform/version combinations working during next week.</p>
+<p>Also planned for next week:</p>
+<ul class="simple">
+<li>Use <tt class="docutils literal">numba</tt> together with <tt class="docutils literal">lambdify</tt>
+</li>
+<li>Use <tt class="docutils literal">Lambdify</tt> from <a class="reference external" href="https://github.com/symengine">SymEngine</a>
+(preferably with the LLVM backend).</li>
+<li>Make the notebooks more tutorial like (right now they are more of a
+show-case).</li>
+</ul>
+<p>and of course: continued work on the code printers. That's all for now
+feel free to get in touch with any feedback or questions.</p>
+</div>
+</div>
+    </div>
+    </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/gsoc-week1.html" class="u-url">A summer of code and mathematics</a></h1>
         <div class="metadata">
             <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
                 Björn Dahlgren
