@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Third week of developing code-generation in SymPy for GSoC.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Status update week 3 GSoC | Björn I. Dahlgren's personal page</title>
+<link href="../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/theme.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="../rss.xml">
+<link rel="canonical" href="http://bjodah.github.io/blog/posts/gsoc-week3.html">
+<!--[if lt IE 9]><script src="../assets/js/html5.js"></script><![endif]--><meta name="author" content="Björn Dahlgren">
+<link rel="prev" href="gsoc-week2.html" title="Status update week 2 GSoC" type="text/html">
+<meta property="og:site_name" content="Björn I. Dahlgren's personal page">
+<meta property="og:title" content="Status update week 3 GSoC">
+<meta property="og:url" content="http://bjodah.github.io/blog/posts/gsoc-week3.html">
+<meta property="og:description" content="Third week of developing code-generation in SymPy for GSoC.">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2017-06-19T23:15:00+02:00">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="SymPy">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="http://bjodah.github.io/blog/">
+
+                <span id="blog-title">Björn I. Dahlgren's personal page</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../archive.html">Archive</a>
+                </li>
+<li>
+<a href="../categories/index.html">Tags</a>
+                </li>
+<li>
+<a href="../rss.xml">RSS feed</a>
+
+                
+            </li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="gsoc-week3.rst" id="sourcelink">Source</a>
+    </li>
+
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+            
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="#" class="u-url">Status update week 3 GSoC</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                    Björn Dahlgren
+            </span></p>
+            <p class="dateline"><a href="#" rel="bookmark"><time class="published dt-published" datetime="2017-06-19T23:15:00+02:00" itemprop="datePublished" title="2017-06-19 23:15">2017-06-19 23:15</time></a></p>
+                <p class="commentline">
+        
+    <a href="gsoc-week3.html#disqus_thread" data-disqus-identifier="cache/posts/170619-w3.html">Comments</a>
+
+
+            
+        </p>
+<p class="sourceline"><a href="gsoc-week3.rst" class="sourcelink">Source</a></p>
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="section" id="fast-callbacks-from-sympy-using-symengine">
+<h2>Fast callbacks from SymPy using SymEngine</h2>
+<p>My main focus the past week has been to get <tt class="docutils literal">Lambdify</tt> in SymEngine
+to work with multiple output parameters. Last year Isuru Fernando lead
+the <a class="reference external" href="https://github.com/symengine/symengine/pull/1094">development</a> to support jit-compiled callbacks using LLVM in SymEngine.
+I started work on leveraging this in the Python wrappers of SymEngine
+but my work stalled due to time constraints.</p>
+<p>But since it is very much related to code generation in SymPy I did
+put it into my time-line (later in the summer) in my GSoC
+application. But with the upcoming SciPy conference, and the fact that
+it would make a nice addition to our tutorial, I have put in <a class="reference external" href="https://github.com/symengine/symengine.py/pull/112">work</a> to
+get this done earlier than first planned.</p>
+<p>Another thing on my to-do-list from last week was to get <tt class="docutils literal">numba</tt> working
+with <tt class="docutils literal">lambdify</tt>. But for this to work we need to wait for a new upstream
+release of <tt class="docutils literal">numba</tt> (which they are hoping to release before the SciPy
+<a class="reference external" href="https://scipy2017.scipy.org/ehome/220975/493418/">conference</a>).</p>
+</div>
+<div class="section" id="status-of-codegen-tutorial-material">
+<h2>Status of codegen-tutorial material</h2>
+<p>I have not added any new tutorial material this week, but have been
+working on making all notebooks work under all targeted operating
+systems. However, every change to the notebooks have to be checked
+on all operating systems using both Python 2 and Python 3. This
+becomes tedious very quickly so I decided to enable continuous
+integration on our <a class="reference external" href="https://github.com/sympy/scipy-2017-codegen-tutorial">repository</a>. I followed conda-forges approach: Travis CI
+for OS X, CircleCI for Linux and AppVeyor for Windows (and a private
+CI server for another Linux setup). And last night
+I <em>finally</em> got green light on all 4 of our CI services.</p>
+</div>
+<div class="section" id="plans-for-the-upcoming-week">
+<h2>Plans for the upcoming week</h2>
+<p>We have had a performance <a class="reference external" href="https://github.com/sympy/sympy/issues/12411">regression</a> in <tt class="docutils literal">sympy.cse</tt> which has bit me
+multiple times this week. I managed to <a class="reference external" href="https://github.com/sympy/sympy_benchmarks/pull/38">craft</a> a small test case
+indicating that the algorithmic complexity of the new function is
+considerably worse than before (effectively making it useless for many
+applications). In my weekly mentor-meeting (with Aaron) we discussed
+possibly reverting that <a class="reference external" href="https://github.com/sympy/sympy/pull/11232">change</a>. I will first try to see if I can
+identify easy-to-fix bottlenecks by profiling the code. But the
+risk is that it is too much work to be done before the upcoming
+new release of SymPy, and then we will simply revert for now (choosing
+speed over extensiveness of the sub-expression elimination).</p>
+<p>I still need to test the notebooks using not only <tt class="docutils literal">msvc</tt> under Windows
+(which is currently used in the AppVeyor tests), but also <tt class="docutils literal">mingw</tt>. I did
+manage to get it working locally but there is still some effort left
+in order to make this work on AppVeyor. It's extra tricky since there
+is a <a class="reference external" href="https://bugs.python.org/issue21821">bug</a> in <tt class="docutils literal">distutils</tt> in Python 3 which causes the detection of mingw
+to fail. So we need to either:</p>
+<ul class="simple">
+<li>Patch <tt class="docutils literal">cygwincompiler.py</tt> in <tt class="docutils literal">distutils</tt> (which I believe we can do
+if we create a conda package for our tutorial material).</li>
+<li>...or use something else than <tt class="docutils literal">pyximport</tt> (I'm hesitant to do this
+before the conference).</li>
+<li>...or provide a gcc executable (not a <tt class="docutils literal">.bat</tt> file) that simply
+spawns <tt class="docutils literal">gcc.bat</tt> (but that executable would need to be compiled
+during build of our conda package).</li>
+</ul>
+<p>Based on my work on making the CI services work, we will need to
+provide test scripts for the participants to run. We need to provide
+the organizers with these scripts by June 27th so this needs to be
+decided upon during next week. I am leaning towards providing an
+<tt class="docutils literal">environment.yml</tt> file together with a simple instruction of
+activating said environment, e.g.:</p>
+<pre class="literal-block">
+$ conda env create -f environment.yml
+$ source activate codegen17
+$ python -c "import scipy2017codegen as cg; cg.test()"
+</pre>
+<p>This could even be tested on our CI services.</p>
+<p>I also intend to add a (perhaps final) tutorial notebook for chemical
+kinetics where we also consider diffusion. We will solve the PDE using
+the method of lines. The addition of a spatial dimension in this way
+is simple in principle, things do tend to become tricky when handling
+boundary conditions though. I will try to use the simplest possible
+treatment in order to avoid taking focus from what we are teaching
+(code-generation).</p>
+<p>It is also my hope that this combined diffusion-reaction model is a
+good candidate for <tt class="docutils literal">ufuncify</tt> from
+<tt class="docutils literal">sympy.utilities.autowrap</tt>.</p>
+</div>
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../categories/python.html" rel="tag">Python</a></li>
+            <li><a class="tag p-category" href="../categories/sympy.html" rel="tag">SymPy</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="gsoc-week2.html" rel="prev" title="Status update week 2 GSoC">Previous post</a>
+            </li>
+        </ul></nav></aside><section class="comments hidden-print"><h2>Comments</h2>
+        
+        
+        <div id="disqus_thread"></div>
+        <script>
+        var disqus_shortname ="bjodahgithubio",
+            disqus_url="http://bjodah.github.io/blog/posts/gsoc-week3.html",
+        disqus_title="Status update week 3 GSoC",
+        disqus_identifier="cache/posts/170619-w3.html",
+        disqus_config = function () {
+            this.language = "en";
+        };
+        (function() {
+            var dsq = document.createElement('script'); dsq.async = true;
+            dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+        </section></article><script>var disqus_shortname="bjodahgithubio";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2017         <a href="mailto:bjodah@gmail.com">Björn Dahlgren</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+        </footer>
+</div>
+</div>
+
+
+            <script src="../assets/js/jquery.min.js"></script><script src="../assets/js/bootstrap.min.js"></script><script src="../assets/js/moment-with-locales.min.js"></script><script src="../assets/js/fancydates.js"></script><script src="../assets/js/jquery.colorbox-min.js"></script><script>$('a.image-reference:not(.islink) img:not(.islink)').parent().colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates -->
+</body>
+</html>

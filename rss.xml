@@ -1,5 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel><title>Björn I. Dahlgren's personal page</title><link>http://bjodah.github.io/blog/</link><description>My personal blog on scientific computing, science and related topics</description><atom:link type="application/rss+xml" href="http://bjodah.github.io/blog/rss.xml" rel="self"></atom:link><language>en</language><lastBuildDate>Sun, 11 Jun 2017 21:55:48 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Status update week 2 GSoC</title><link>http://bjodah.github.io/blog/posts/gsoc-week2.html</link><dc:creator>Björn Dahlgren</dc:creator><description>&lt;div&gt;&lt;p&gt;I have spent the second week of Google Summer of Code on essentially two things:&lt;/p&gt;
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel><title>Björn I. Dahlgren's personal page</title><link>http://bjodah.github.io/blog/</link><description>My personal blog on scientific computing, science and related topics</description><atom:link href="http://bjodah.github.io/blog/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Mon, 19 Jun 2017 23:25:02 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Status update week 3 GSoC</title><link>http://bjodah.github.io/blog/posts/gsoc-week3.html</link><dc:creator>Björn Dahlgren</dc:creator><description>&lt;div&gt;&lt;div class="section" id="fast-callbacks-from-sympy-using-symengine"&gt;
+&lt;h2&gt;Fast callbacks from SymPy using SymEngine&lt;/h2&gt;
+&lt;p&gt;My main focus the past week has been to get &lt;tt class="docutils literal"&gt;Lambdify&lt;/tt&gt; in SymEngine
+to work with multiple output parameters. Last year Isuru Fernando lead
+the &lt;a class="reference external" href="https://github.com/symengine/symengine/pull/1094"&gt;development&lt;/a&gt; to support jit-compiled callbacks using LLVM in SymEngine.
+I started work on leveraging this in the Python wrappers of SymEngine
+but my work stalled due to time constraints.&lt;/p&gt;
+&lt;p&gt;But since it is very much related to code generation in SymPy I did
+put it into my time-line (later in the summer) in my GSoC
+application. But with the upcoming SciPy conference, and the fact that
+it would make a nice addition to our tutorial, I have put in &lt;a class="reference external" href="https://github.com/symengine/symengine.py/pull/112"&gt;work&lt;/a&gt; to
+get this done earlier than first planned.&lt;/p&gt;
+&lt;p&gt;Another thing on my to-do-list from last week was to get &lt;tt class="docutils literal"&gt;numba&lt;/tt&gt; working
+with &lt;tt class="docutils literal"&gt;lambdify&lt;/tt&gt;. But for this to work we need to wait for a new upstream
+release of &lt;tt class="docutils literal"&gt;numba&lt;/tt&gt; (which they are hoping to release before the SciPy
+&lt;a class="reference external" href="https://scipy2017.scipy.org/ehome/220975/493418/"&gt;conference&lt;/a&gt;).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="status-of-codegen-tutorial-material"&gt;
+&lt;h2&gt;Status of codegen-tutorial material&lt;/h2&gt;
+&lt;p&gt;I have not added any new tutorial material this week, but have been
+working on making all notebooks work under all targeted operating
+systems. However, every change to the notebooks have to be checked
+on all operating systems using both Python 2 and Python 3. This
+becomes tedious very quickly so I decided to enable continuous
+integration on our &lt;a class="reference external" href="https://github.com/sympy/scipy-2017-codegen-tutorial"&gt;repository&lt;/a&gt;. I followed conda-forges approach: Travis CI
+for OS X, CircleCI for Linux and AppVeyor for Windows (and a private
+CI server for another Linux setup). And last night
+I &lt;em&gt;finally&lt;/em&gt; got green light on all 4 of our CI services.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="plans-for-the-upcoming-week"&gt;
+&lt;h2&gt;Plans for the upcoming week&lt;/h2&gt;
+&lt;p&gt;We have had a performance &lt;a class="reference external" href="https://github.com/sympy/sympy/issues/12411"&gt;regression&lt;/a&gt; in &lt;tt class="docutils literal"&gt;sympy.cse&lt;/tt&gt; which has bit me
+multiple times this week. I managed to &lt;a class="reference external" href="https://github.com/sympy/sympy_benchmarks/pull/38"&gt;craft&lt;/a&gt; a small test case
+indicating that the algorithmic complexity of the new function is
+considerably worse than before (effectively making it useless for many
+applications). In my weekly mentor-meeting (with Aaron) we discussed
+possibly reverting that &lt;a class="reference external" href="https://github.com/sympy/sympy/pull/11232"&gt;change&lt;/a&gt;. I will first try to see if I can
+identify easy-to-fix bottlenecks by profiling the code. But the
+risk is that it is too much work to be done before the upcoming
+new release of SymPy, and then we will simply revert for now (choosing
+speed over extensiveness of the sub-expression elimination).&lt;/p&gt;
+&lt;p&gt;I still need to test the notebooks using not only &lt;tt class="docutils literal"&gt;msvc&lt;/tt&gt; under Windows
+(which is currently used in the AppVeyor tests), but also &lt;tt class="docutils literal"&gt;mingw&lt;/tt&gt;. I did
+manage to get it working locally but there is still some effort left
+in order to make this work on AppVeyor. It's extra tricky since there
+is a &lt;a class="reference external" href="https://bugs.python.org/issue21821"&gt;bug&lt;/a&gt; in &lt;tt class="docutils literal"&gt;distutils&lt;/tt&gt; in Python 3 which causes the detection of mingw
+to fail. So we need to either:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Patch &lt;tt class="docutils literal"&gt;cygwincompiler.py&lt;/tt&gt; in &lt;tt class="docutils literal"&gt;distutils&lt;/tt&gt; (which I believe we can do
+if we create a conda package for our tutorial material).&lt;/li&gt;
+&lt;li&gt;...or use something else than &lt;tt class="docutils literal"&gt;pyximport&lt;/tt&gt; (I'm hesitant to do this
+before the conference).&lt;/li&gt;
+&lt;li&gt;...or provide a gcc executable (not a &lt;tt class="docutils literal"&gt;.bat&lt;/tt&gt; file) that simply
+spawns &lt;tt class="docutils literal"&gt;gcc.bat&lt;/tt&gt; (but that executable would need to be compiled
+during build of our conda package).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Based on my work on making the CI services work, we will need to
+provide test scripts for the participants to run. We need to provide
+the organizers with these scripts by June 27th so this needs to be
+decided upon during next week. I am leaning towards providing an
+&lt;tt class="docutils literal"&gt;environment.yml&lt;/tt&gt; file together with a simple instruction of
+activating said environment, e.g.:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+$ conda env create -f environment.yml
+$ source activate codegen17
+$ python -c "import scipy2017codegen as cg; cg.test()"
+&lt;/pre&gt;
+&lt;p&gt;This could even be tested on our CI services.&lt;/p&gt;
+&lt;p&gt;I also intend to add a (perhaps final) tutorial notebook for chemical
+kinetics where we also consider diffusion. We will solve the PDE using
+the method of lines. The addition of a spatial dimension in this way
+is simple in principle, things do tend to become tricky when handling
+boundary conditions though. I will try to use the simplest possible
+treatment in order to avoid taking focus from what we are teaching
+(code-generation).&lt;/p&gt;
+&lt;p&gt;It is also my hope that this combined diffusion-reaction model is a
+good candidate for &lt;tt class="docutils literal"&gt;ufuncify&lt;/tt&gt; from
+&lt;tt class="docutils literal"&gt;sympy.utilities.autowrap&lt;/tt&gt;.&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;</description><category>Python</category><category>SymPy</category><guid>http://bjodah.github.io/blog/posts/gsoc-week3.html</guid><pubDate>Mon, 19 Jun 2017 21:15:00 GMT</pubDate></item><item><title>Status update week 2 GSoC</title><link>http://bjodah.github.io/blog/posts/gsoc-week2.html</link><dc:creator>Björn Dahlgren</dc:creator><description>&lt;div&gt;&lt;p&gt;I have spent the second week of Google Summer of Code on essentially two things:&lt;/p&gt;
 &lt;ol class="arabic simple"&gt;
 &lt;li&gt;Continued work on type awareness in the code printers (&lt;tt class="docutils literal"&gt;CCodePrinter&lt;/tt&gt; and
 &lt;tt class="docutils literal"&gt;FCodePrinter&lt;/tt&gt;). The work is ongoing in &lt;a class="reference external" href="https://github.com/sympy/sympy/pull/12693"&gt;gh-12693&lt;/a&gt;.&lt;/li&gt;
