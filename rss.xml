@@ -1,5 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel><title>Björn I. Dahlgren's personal page</title><link>http://bjodah.github.io/blog/</link><description>My personal blog on scientific computing, science and related topics</description><atom:link href="http://bjodah.github.io/blog/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Mon, 19 Jun 2017 23:25:02 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Status update week 3 GSoC</title><link>http://bjodah.github.io/blog/posts/gsoc-week3.html</link><dc:creator>Björn Dahlgren</dc:creator><description>&lt;div&gt;&lt;div class="section" id="fast-callbacks-from-sympy-using-symengine"&gt;
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel><title>Björn I. Dahlgren's personal page</title><link>http://bjodah.github.io/blog/</link><description>My personal blog on scientific computing, science and related topics</description><atom:link rel="self" type="application/rss+xml" href="http://bjodah.github.io/blog/rss.xml"></atom:link><language>en</language><lastBuildDate>Mon, 26 Jun 2017 20:29:46 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Status update week 4 GSoC</title><link>http://bjodah.github.io/blog/posts/gsoc-week4.html</link><dc:creator>Björn Dahlgren</dc:creator><description>&lt;div&gt;&lt;div class="section" id="continued-work-on-tutorial-material"&gt;
+&lt;h2&gt;Continued work on tutorial material&lt;/h2&gt;
+&lt;p&gt;During the past week I got &lt;a class="reference external" href="https://mybinder.org"&gt;binder&lt;/a&gt; to work with
+our tutorial material. Using &lt;tt class="docutils literal"&gt;environment.yml&lt;/tt&gt; did require that we had
+a conda package available. So I set up our instance of &lt;a class="reference external" href="https://drone.io"&gt;Drone IO&lt;/a&gt; to push to the &lt;tt class="docutils literal"&gt;sympy&lt;/tt&gt; conda channel. The new
+base dockerimage used in the beta version of binder (v2) does not
+contain gcc by default. This prompted me to add gcc to our
+&lt;tt class="docutils literal"&gt;environment.yml&lt;/tt&gt;, unfortunately this breaks the build process:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+Attempting to roll back.
+LinkError: post-link script failed for package defaults::gcc-4.8.5-7
+running your command again with `-v` will provide additional information
+location of failed script: /opt/conda/bin/.gcc-post-link.sh
+==&amp;gt; script messages &amp;lt;==
+&amp;lt;None&amp;gt;
+&lt;/pre&gt;
+&lt;p&gt;I've reached out on their gitter channel, we'll see if anyone knows
+what's up. If we cannot work around this we will have two options:&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;Accept that the binder version cannot compile any generated code&lt;/li&gt;
+&lt;li&gt;Try to use binder with a Dockerimage based on the one used for CI
+tests (with the difference that it will include a prebuilt conda
+environment from &lt;tt class="docutils literal"&gt;environment.yml&lt;/tt&gt;)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;I hope that the second approach should work unless we hit a image size
+limitation (and perhaps we need a special base image, I haven't looked
+into those details yet).&lt;/p&gt;
+&lt;p&gt;Jason has been producing some really high quality tutorial notebooks
+and left lots of constructive feedback on my initial work. Based on
+his feedback I've started reworking the code-generation examples not
+to use classes as extensively. I've also added some introductory
+notebooks: numerical integration of ODEs in general &amp;amp; intro to SymPy's
+cryptically named &lt;tt class="docutils literal"&gt;lambdify&lt;/tt&gt; (the latter notebook is still to be
+merged into master).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="work-on-sympy-for-version-1-1"&gt;
+&lt;h2&gt;Work on SymPy for version 1.1&lt;/h2&gt;
+&lt;p&gt;After last weeks mentor meeting we decided that we would try to
+&lt;a class="reference external" href="https://github.com/sympy/sympy/pull/12805"&gt;revert&lt;/a&gt; a change to
+&lt;tt class="docutils literal"&gt;sympy.cse&lt;/tt&gt; (a function which performs common subexpression
+elimination). I did spend some time profiling the new implementation.
+However, I was not able to find any obvious bottle-necks, and given
+that it is not the main scope of my project I did not pursue this any
+further at the moment.&lt;/p&gt;
+&lt;p&gt;I also &lt;a class="reference external" href="https://github.com/sympy/sympy/pull/12808"&gt;just started&lt;/a&gt;
+looking at introducing a Python code printer. There is a
+&lt;tt class="docutils literal"&gt;PythonPrinter&lt;/tt&gt; in SymPy right now, although it assumes that
+&lt;tt class="docutils literal"&gt;SymPy&lt;/tt&gt; is available. The plan right now is to rename to old
+printer to &lt;tt class="docutils literal"&gt;SymPyCodePrinter&lt;/tt&gt; and have the new printer primarily print
+expressions, which is what the &lt;tt class="docutils literal"&gt;CodePrinter&lt;/tt&gt; class does best, even
+though it can be "coerced" into emitting statements.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="plans-for-the-upcoming-week"&gt;
+&lt;h2&gt;Plans for the upcoming week&lt;/h2&gt;
+&lt;p&gt;As the conference approaches the work intensifies both with respect to
+finishing up the tutorial material and fixing blocking issues for a
+SymPy 1.1 release. Working on the tutorial material helps finding
+things to improve code-generation wise (just today I opened a &lt;a class="reference external" href="https://github.com/sympy/sympy/issues/12810"&gt;minor
+issue&lt;/a&gt; just to realize
+that my &lt;a class="reference external" href="https://github.com/sympy/sympy/pull/12693"&gt;"work-in-progress" pull-request&lt;/a&gt; from an earlier week
+(which I intend to get back working on next week too) actually fixes
+said issue.&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;</description><category>Python</category><category>SymPy</category><guid>http://bjodah.github.io/blog/posts/gsoc-week4.html</guid><pubDate>Mon, 26 Jun 2017 19:39:00 GMT</pubDate></item><item><title>Status update week 3 GSoC</title><link>http://bjodah.github.io/blog/posts/gsoc-week3.html</link><dc:creator>Björn Dahlgren</dc:creator><description>&lt;div&gt;&lt;div class="section" id="fast-callbacks-from-sympy-using-symengine"&gt;
 &lt;h2&gt;Fast callbacks from SymPy using SymEngine&lt;/h2&gt;
 &lt;p&gt;My main focus the past week has been to get &lt;tt class="docutils literal"&gt;Lambdify&lt;/tt&gt; in SymEngine
 to work with multiple output parameters. Last year Isuru Fernando lead
