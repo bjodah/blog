@@ -15,11 +15,11 @@
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/2017/index.html</loc>
-  <lastmod>2017-06-26T20:29:00Z</lastmod>
+  <lastmod>2017-07-03T21:22:00Z</lastmod>
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/archive.html</loc>
-  <lastmod>2017-06-26T20:18:00Z</lastmod>
+  <lastmod>2017-07-03T21:17:00Z</lastmod>
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/categories/bash.html</loc>
@@ -31,7 +31,7 @@
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/categories/index.html</loc>
-  <lastmod>2017-06-26T20:18:00Z</lastmod>
+  <lastmod>2017-07-03T21:17:00Z</lastmod>
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/categories/nikola.html</loc>
@@ -39,7 +39,7 @@
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/categories/python.html</loc>
-  <lastmod>2017-06-26T20:29:00Z</lastmod>
+  <lastmod>2017-07-03T21:22:00Z</lastmod>
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/categories/reproducible-research.html</loc>
@@ -47,11 +47,11 @@
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/categories/sympy.html</loc>
-  <lastmod>2017-06-26T20:29:00Z</lastmod>
+  <lastmod>2017-07-03T21:22:00Z</lastmod>
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/index.html</loc>
-  <lastmod>2017-06-26T20:29:00Z</lastmod>
+  <lastmod>2017-07-03T21:22:00Z</lastmod>
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/pages/index.html</loc>
@@ -87,7 +87,11 @@
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/posts/gsoc-week4.html</loc>
-  <lastmod>2017-06-26T20:29:00Z</lastmod>
+  <lastmod>2017-07-03T21:17:00Z</lastmod>
+ </url>
+ <url>
+  <loc>http://bjodah.github.io/blog/posts/gsoc-week5.html</loc>
+  <lastmod>2017-07-03T21:22:00Z</lastmod>
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/posts/reproducible-research-docker.html</loc>

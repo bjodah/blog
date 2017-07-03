@@ -16,7 +16,7 @@
 <meta name="generator" content="Nikola (getnikola.com)">
 <link rel="alternate" type="application/rss+xml" title="RSS" href="rss.xml">
 <link rel="canonical" href="http://bjodah.github.io/blog/index.html">
-<!--[if lt IE 9]><script src="assets/js/html5.js"></script><![endif]--><link rel="prefetch" href="posts/gsoc-week4.html" type="text/html">
+<!--[if lt IE 9]><script src="assets/js/html5.js"></script><![endif]--><link rel="prefetch" href="posts/gsoc-week5.html" type="text/html">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -66,7 +66,96 @@
 
     
 <div class="postindex">
-    <article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/gsoc-week4.html" class="u-url">Status update week 4 GSoC</a></h1>
+    <article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/gsoc-week5.html" class="u-url">Status update week 5 GSoC</a></h1>
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                Björn Dahlgren
+            </span></p>
+            <p class="dateline"><a href="posts/gsoc-week5.html" rel="bookmark"><time class="published dt-published" datetime="2017-07-03T20:37:00+02:00" title="2017-07-03 20:37">2017-07-03 20:37</time></a></p>
+                <p class="commentline">
+        
+    <a href="posts/gsoc-week5.html#disqus_thread" data-disqus-identifier="cache/posts/170703-w5.html">Comments</a>
+
+
+        </p>
+</div>
+    </header><div class="e-content entry-content">
+    <div>
+<div class="section" id="continued-work-on-tutorial-material">
+<h2>Continued work on tutorial material</h2>
+<p>Cross-platform work is always a bit tricky. Python does in general
+a great job of allowing programs to access the filesystem, network etc
+in an OS agnostic manner, but sometimes there is no way around having
+to write special code for each platform. In Python that often means
+that we will do runtime inspection:</p>
+<pre class="literal-block">
+&gt;&gt;&gt; sys.platform
+'linux'  # or e.g. darwin
+&gt;&gt;&gt; os.name
+'posix'  # or e.g. nt
+</pre>
+<p>To add another dimension of complexity we sometimes deal with 32-bit
+and sometimes 64-bit systems (most headaches are caused by pointer
+sizes, size of <tt class="docutils literal">int</tt> and <tt class="docutils literal">long</tt>), in python we can get the size of
+<tt class="docutils literal">int</tt> of the platform quite easily:</p>
+<pre class="literal-block">
+&gt;&gt;&gt; sys.maxsize - 2**63 + 1
+0
+</pre>
+<p>when you, in addition to this, are doing code-generation, you are most
+likely relying on a compiler. That is our third dimension of
+complexity, on linux that (usually) translates to gcc &amp; llvm/clang
+(but Intel's icc/ifort &amp; portland group compilers and not uncommon).
+This third "dimension" has been the number one struggle the past
+week (and in particular the <a class="reference external" href="https://github.com/sympy/scipy-2017-codegen-tutorial/issues/13">combination</a>
+mingw/<a class="reference external" href="https://github.com/sympy/scipy-2017-codegen-tutorial/pull/14">windows</a>). At
+this point I feel that it is not worthwhile to continue pursuing <tt class="docutils literal">mingw</tt>
+support on Windows.</p>
+<p>It is quite likely that a few of our attendees will have some
+technical difficulties with system installed compilers. Therefore, I'm
+particularly happy that we now have got our <a class="reference external" href="https://mybinder.org">binder</a> environment to work flawlessly. It took some
+work to setup a <a class="reference external" href="https://github.com/sympy/scipy-2017-codegen-tutorial/blob/master/Dockerfile">Dockerfile</a>,
+but now it feels reassuring to have this as a fall-back.</p>
+</div>
+<div class="section" id="work-on-sympy-for-version-1-1">
+<h2>Work on SymPy for version 1.1</h2>
+<p>The <a class="reference external" href="https://github.com/sympy/sympy/pull/12808">work</a> on the
+<tt class="docutils literal">PythonCodePrinter</tt> has progressed since last week and should
+hopefully soon be ready for merging. The purpose of this class is to
+be stepping stone moving away from having e.g. <tt class="docutils literal">lambdify</tt> relying on
+the StrPrinter, and instead use the <tt class="docutils literal">CodePrinter</tt> class in
+<tt class="docutils literal">.printing.codeprinter</tt>. Changing the super class showed to be
+trickier than first anticipiated (I thought it would be an afternoons
+work at most). I originally planned to rename the original
+<tt class="docutils literal">PythonPrinter</tt> to something more appropriate (<tt class="docutils literal">SymPyCodePrinter</tt>)
+together with its convenience functions. However, since this would
+incur a deprecation for only name change, it was decided that we will
+have to live with the old naming (to avoid raising tons of deprecation
+warnings in downstream projects).</p>
+<p>We had identified two extensions we wanted to introduce to the
+codegeneration/autowrap factilities before the v1.1 release:</p>
+<ul class="simple">
+<li>Kenneth Lyons (@ixjlyons) <a class="reference external" href="https://github.com/sympy/sympy/pull/12833">spear-headed</a> the effort to allow
+custom CodeGen subclasses to be passed to <tt class="docutils literal">codegen</tt>
+</li>
+<li>...and Jason the <a class="reference external" href="https://github.com/sympy/sympy/pull/12843">changes</a> to the
+<tt class="docutils literal">CythonWrapper</tt> to allow compiler arguments to be passed to
+autowrap.</li>
+</ul>
+</div>
+<div class="section" id="plans-for-the-upcoming-week">
+<h2>Plans for the upcoming week</h2>
+<p>With a release candidate of SymPy v1.1 out the door (an impressive
+effort led by @asmeurer) and most cross-platform issues out of the
+way, it is about time for the final iterations of the  tutorial
+material (and hopefully iron out any related issues in the rc).</p>
+<p>At the end of the week it's time for me to fly to the US to attend
+SciPy 2017. I have high expectations and believe that it will be a
+great catalyst for the rest of the summers work on code-generation.</p>
+</div>
+</div>
+    </div>
+    </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="posts/gsoc-week4.html" class="u-url">Status update week 4 GSoC</a></h1>
         <div class="metadata">
             <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
                 Björn Dahlgren

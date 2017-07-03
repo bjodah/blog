@@ -1,5 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel><title>Björn I. Dahlgren's personal page (Posts about Python)</title><link>http://bjodah.github.io/blog/</link><description></description><atom:link rel="self" type="application/rss+xml" href="http://bjodah.github.io/blog/categories/python.xml"></atom:link><language>en</language><lastBuildDate>Mon, 26 Jun 2017 20:29:46 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Status update week 4 GSoC</title><link>http://bjodah.github.io/blog/posts/gsoc-week4.html</link><dc:creator>Björn Dahlgren</dc:creator><description>&lt;div&gt;&lt;div class="section" id="continued-work-on-tutorial-material"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0"><channel><title>Björn I. Dahlgren's personal page (Posts about Python)</title><link>http://bjodah.github.io/blog/</link><description></description><atom:link rel="self" type="application/rss+xml" href="http://bjodah.github.io/blog/categories/python.xml"></atom:link><language>en</language><lastBuildDate>Mon, 03 Jul 2017 21:22:41 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Status update week 5 GSoC</title><link>http://bjodah.github.io/blog/posts/gsoc-week5.html</link><dc:creator>Björn Dahlgren</dc:creator><description>&lt;div&gt;&lt;div class="section" id="continued-work-on-tutorial-material"&gt;
+&lt;h2&gt;Continued work on tutorial material&lt;/h2&gt;
+&lt;p&gt;Cross-platform work is always a bit tricky. Python does in general
+a great job of allowing programs to access the filesystem, network etc
+in an OS agnostic manner, but sometimes there is no way around having
+to write special code for each platform. In Python that often means
+that we will do runtime inspection:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+&amp;gt;&amp;gt;&amp;gt; sys.platform
+'linux'  # or e.g. darwin
+&amp;gt;&amp;gt;&amp;gt; os.name
+'posix'  # or e.g. nt
+&lt;/pre&gt;
+&lt;p&gt;To add another dimension of complexity we sometimes deal with 32-bit
+and sometimes 64-bit systems (most headaches are caused by pointer
+sizes, size of &lt;tt class="docutils literal"&gt;int&lt;/tt&gt; and &lt;tt class="docutils literal"&gt;long&lt;/tt&gt;), in python we can get the size of
+&lt;tt class="docutils literal"&gt;int&lt;/tt&gt; of the platform quite easily:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+&amp;gt;&amp;gt;&amp;gt; sys.maxsize - 2**63 + 1
+0
+&lt;/pre&gt;
+&lt;p&gt;when you, in addition to this, are doing code-generation, you are most
+likely relying on a compiler. That is our third dimension of
+complexity, on linux that (usually) translates to gcc &amp;amp; llvm/clang
+(but Intel's icc/ifort &amp;amp; portland group compilers and not uncommon).
+This third "dimension" has been the number one struggle the past
+week (and in particular the &lt;a class="reference external" href="https://github.com/sympy/scipy-2017-codegen-tutorial/issues/13"&gt;combination&lt;/a&gt;
+mingw/&lt;a class="reference external" href="https://github.com/sympy/scipy-2017-codegen-tutorial/pull/14"&gt;windows&lt;/a&gt;). At
+this point I feel that it is not worthwhile to continue pursuing &lt;tt class="docutils literal"&gt;mingw&lt;/tt&gt;
+support on Windows.&lt;/p&gt;
+&lt;p&gt;It is quite likely that a few of our attendees will have some
+technical difficulties with system installed compilers. Therefore, I'm
+particularly happy that we now have got our &lt;a class="reference external" href="https://mybinder.org"&gt;binder&lt;/a&gt; environment to work flawlessly. It took some
+work to setup a &lt;a class="reference external" href="https://github.com/sympy/scipy-2017-codegen-tutorial/blob/master/Dockerfile"&gt;Dockerfile&lt;/a&gt;,
+but now it feels reassuring to have this as a fall-back.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="work-on-sympy-for-version-1-1"&gt;
+&lt;h2&gt;Work on SymPy for version 1.1&lt;/h2&gt;
+&lt;p&gt;The &lt;a class="reference external" href="https://github.com/sympy/sympy/pull/12808"&gt;work&lt;/a&gt; on the
+&lt;tt class="docutils literal"&gt;PythonCodePrinter&lt;/tt&gt; has progressed since last week and should
+hopefully soon be ready for merging. The purpose of this class is to
+be stepping stone moving away from having e.g. &lt;tt class="docutils literal"&gt;lambdify&lt;/tt&gt; relying on
+the StrPrinter, and instead use the &lt;tt class="docutils literal"&gt;CodePrinter&lt;/tt&gt; class in
+&lt;tt class="docutils literal"&gt;.printing.codeprinter&lt;/tt&gt;. Changing the super class showed to be
+trickier than first anticipiated (I thought it would be an afternoons
+work at most). I originally planned to rename the original
+&lt;tt class="docutils literal"&gt;PythonPrinter&lt;/tt&gt; to something more appropriate (&lt;tt class="docutils literal"&gt;SymPyCodePrinter&lt;/tt&gt;)
+together with its convenience functions. However, since this would
+incur a deprecation for only name change, it was decided that we will
+have to live with the old naming (to avoid raising tons of deprecation
+warnings in downstream projects).&lt;/p&gt;
+&lt;p&gt;We had identified two extensions we wanted to introduce to the
+codegeneration/autowrap factilities before the v1.1 release:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Kenneth Lyons (@ixjlyons) &lt;a class="reference external" href="https://github.com/sympy/sympy/pull/12833"&gt;spear-headed&lt;/a&gt; the effort to allow
+custom CodeGen subclasses to be passed to &lt;tt class="docutils literal"&gt;codegen&lt;/tt&gt;&lt;/li&gt;
+&lt;li&gt;...and Jason the &lt;a class="reference external" href="https://github.com/sympy/sympy/pull/12843"&gt;changes&lt;/a&gt; to the
+&lt;tt class="docutils literal"&gt;CythonWrapper&lt;/tt&gt; to allow compiler arguments to be passed to
+autowrap.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="section" id="plans-for-the-upcoming-week"&gt;
+&lt;h2&gt;Plans for the upcoming week&lt;/h2&gt;
+&lt;p&gt;With a release candidate of SymPy v1.1 out the door (an impressive
+effort led by @asmeurer) and most cross-platform issues out of the
+way, it is about time for the final iterations of the  tutorial
+material (and hopefully iron out any related issues in the rc).&lt;/p&gt;
+&lt;p&gt;At the end of the week it's time for me to fly to the US to attend
+SciPy 2017. I have high expectations and believe that it will be a
+great catalyst for the rest of the summers work on code-generation.&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;</description><category>Python</category><category>SymPy</category><guid>http://bjodah.github.io/blog/posts/gsoc-week5.html</guid><pubDate>Mon, 03 Jul 2017 18:37:00 GMT</pubDate></item><item><title>Status update week 4 GSoC</title><link>http://bjodah.github.io/blog/posts/gsoc-week4.html</link><dc:creator>Björn Dahlgren</dc:creator><description>&lt;div&gt;&lt;div class="section" id="continued-work-on-tutorial-material"&gt;
 &lt;h2&gt;Continued work on tutorial material&lt;/h2&gt;
 &lt;p&gt;During the past week I got &lt;a class="reference external" href="https://mybinder.org"&gt;binder&lt;/a&gt; to work with
 our tutorial material. Using &lt;tt class="docutils literal"&gt;environment.yml&lt;/tt&gt; did require that we had
