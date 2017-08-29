@@ -7,98 +7,138 @@
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <url>
   <loc>http://bjodah.github.io/blog/2015/index.html</loc>
-  <lastmod>2017-06-04T16:03:00Z</lastmod>
+  <lastmod>2017-08-29T11:29:00Z</lastmod>
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/2016/index.html</loc>
-  <lastmod>2017-05-31T13:36:00Z</lastmod>
+  <lastmod>2017-08-29T11:29:00Z</lastmod>
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/2017/index.html</loc>
-  <lastmod>2017-07-03T21:22:00Z</lastmod>
+  <lastmod>2017-08-29T12:20:00Z</lastmod>
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/archive.html</loc>
-  <lastmod>2017-07-03T21:17:00Z</lastmod>
+  <lastmod>2017-08-29T11:29:00Z</lastmod>
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/categories/bash.html</loc>
-  <lastmod>2017-05-31T13:36:00Z</lastmod>
+  <lastmod>2017-08-29T11:29:00Z</lastmod>
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/categories/docker.html</loc>
-  <lastmod>2017-05-31T13:36:00Z</lastmod>
+  <lastmod>2017-08-29T11:29:00Z</lastmod>
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/categories/index.html</loc>
-  <lastmod>2017-07-03T21:17:00Z</lastmod>
+  <lastmod>2017-08-29T11:29:00Z</lastmod>
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/categories/nikola.html</loc>
-  <lastmod>2017-06-04T16:03:00Z</lastmod>
+  <lastmod>2017-08-29T11:29:00Z</lastmod>
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/categories/python.html</loc>
-  <lastmod>2017-07-03T21:22:00Z</lastmod>
+  <lastmod>2017-08-29T12:20:00Z</lastmod>
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/categories/reproducible-research.html</loc>
-  <lastmod>2017-05-31T13:36:00Z</lastmod>
+  <lastmod>2017-08-29T11:29:00Z</lastmod>
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/categories/sympy.html</loc>
-  <lastmod>2017-07-03T21:22:00Z</lastmod>
+  <lastmod>2017-08-29T12:20:00Z</lastmod>
+ </url>
+ <url>
+  <loc>http://bjodah.github.io/blog/index-1.html</loc>
+  <lastmod>2017-08-29T11:29:00Z</lastmod>
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/index.html</loc>
-  <lastmod>2017-07-03T21:22:00Z</lastmod>
+  <lastmod>2017-08-29T12:20:00Z</lastmod>
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/pages/index.html</loc>
-  <lastmod>2017-05-31T13:36:00Z</lastmod>
+  <lastmod>2017-08-29T11:29:00Z</lastmod>
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/pages/publications.html</loc>
-  <lastmod>2017-05-31T13:36:00Z</lastmod>
+  <lastmod>2017-08-29T11:29:00Z</lastmod>
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/posts/bateman-equation.html</loc>
-  <lastmod>2017-05-31T13:36:00Z</lastmod>
+  <lastmod>2017-08-29T11:29:00Z</lastmod>
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/posts/dealing-with-temporaries-in-bash.html</loc>
-  <lastmod>2017-05-31T13:36:00Z</lastmod>
+  <lastmod>2017-08-29T11:29:00Z</lastmod>
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/posts/first-post.html</loc>
-  <lastmod>2017-06-04T16:03:00Z</lastmod>
+  <lastmod>2017-08-29T11:29:00Z</lastmod>
+ </url>
+ <url>
+  <loc>http://bjodah.github.io/blog/posts/gsoc-report.html</loc>
+  <lastmod>2017-08-29T11:33:00Z</lastmod>
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/posts/gsoc-week1.html</loc>
-  <lastmod>2017-06-19T22:49:00Z</lastmod>
+  <lastmod>2017-08-29T11:29:00Z</lastmod>
+ </url>
+ <url>
+  <loc>http://bjodah.github.io/blog/posts/gsoc-week10.html</loc>
+  <lastmod>2017-08-29T11:29:00Z</lastmod>
+ </url>
+ <url>
+  <loc>http://bjodah.github.io/blog/posts/gsoc-week11.html</loc>
+  <lastmod>2017-08-29T11:29:00Z</lastmod>
+ </url>
+ <url>
+  <loc>http://bjodah.github.io/blog/posts/gsoc-week12.html</loc>
+  <lastmod>2017-08-29T11:29:00Z</lastmod>
+ </url>
+ <url>
+  <loc>http://bjodah.github.io/blog/posts/gsoc-week13.html</loc>
+  <lastmod>2017-08-29T11:29:00Z</lastmod>
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/posts/gsoc-week2.html</loc>
-  <lastmod>2017-06-19T22:49:00Z</lastmod>
+  <lastmod>2017-08-29T11:29:00Z</lastmod>
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/posts/gsoc-week3.html</loc>
-  <lastmod>2017-06-26T20:18:00Z</lastmod>
+  <lastmod>2017-08-29T11:29:00Z</lastmod>
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/posts/gsoc-week4.html</loc>
-  <lastmod>2017-07-03T21:17:00Z</lastmod>
+  <lastmod>2017-08-29T11:29:00Z</lastmod>
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/posts/gsoc-week5.html</loc>
-  <lastmod>2017-07-03T21:22:00Z</lastmod>
+  <lastmod>2017-08-29T11:29:00Z</lastmod>
+ </url>
+ <url>
+  <loc>http://bjodah.github.io/blog/posts/gsoc-week6.html</loc>
+  <lastmod>2017-08-29T11:29:00Z</lastmod>
+ </url>
+ <url>
+  <loc>http://bjodah.github.io/blog/posts/gsoc-week7.html</loc>
+  <lastmod>2017-08-29T11:29:00Z</lastmod>
+ </url>
+ <url>
+  <loc>http://bjodah.github.io/blog/posts/gsoc-week8.html</loc>
+  <lastmod>2017-08-29T12:20:00Z</lastmod>
+ </url>
+ <url>
+  <loc>http://bjodah.github.io/blog/posts/gsoc-week9.html</loc>
+  <lastmod>2017-08-29T11:29:00Z</lastmod>
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/posts/reproducible-research-docker.html</loc>
-  <lastmod>2017-05-31T13:36:00Z</lastmod>
+  <lastmod>2017-08-29T11:29:00Z</lastmod>
  </url>
  <url>
   <loc>http://bjodah.github.io/blog/posts/writing-tests-for-python.html</loc>
-  <lastmod>2017-06-04T16:03:00Z</lastmod>
+  <lastmod>2017-08-29T11:29:00Z</lastmod>
  </url>
 </urlset>

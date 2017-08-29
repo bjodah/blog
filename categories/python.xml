@@ -1,5 +1,481 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0"><channel><title>Björn I. Dahlgren's personal page (Posts about Python)</title><link>http://bjodah.github.io/blog/</link><description></description><atom:link rel="self" type="application/rss+xml" href="http://bjodah.github.io/blog/categories/python.xml"></atom:link><language>en</language><lastBuildDate>Mon, 03 Jul 2017 21:22:41 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Status update week 5 GSoC</title><link>http://bjodah.github.io/blog/posts/gsoc-week5.html</link><dc:creator>Björn Dahlgren</dc:creator><description>&lt;div&gt;&lt;div class="section" id="continued-work-on-tutorial-material"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Björn I. Dahlgren's personal page (Posts about Python)</title><link>http://bjodah.github.io/blog/</link><description></description><atom:link rel="self" type="application/rss+xml" href="http://bjodah.github.io/blog/categories/python.xml"></atom:link><language>en</language><lastBuildDate>Tue, 29 Aug 2017 12:20:32 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>GSoC 2017 Report</title><link>http://bjodah.github.io/blog/posts/gsoc-report.html</link><dc:creator>Björn Dahlgren</dc:creator><description>&lt;div&gt;&lt;div class="section" id="introduction"&gt;
+&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;My project was to enhance the code-generation facilities of SymPy.
+You can read my &lt;a class="reference external" href="https://github.com/sympy/sympy/wiki/GSoC-2017-Application-Bj%C3%B6rn-Dahlgren:-Improved-code-generation-facilities"&gt;proposal&lt;/a&gt;
+for the motivation behind this work. The overall goals were the
+following:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Allow to render code targeting a specific precision (e.g. binary32
+vs. binary64 floating point numbers). Prior to this project the
+printers would sometimes generate code containing a mixture of single,
+double and extended precision, and there were no way to change this
+short of subclassing the printers and overriding the methods.&lt;/li&gt;
+&lt;li&gt;Allow to render blocks of code and not only expressions. There was
+an initial effort to support this in the submodule
+&lt;tt class="docutils literal"&gt;sympy.codegen&lt;/tt&gt;.&lt;/li&gt;
+&lt;li&gt;Improve the &lt;tt class="docutils literal"&gt;Lambdify&lt;/tt&gt; functionality in SymEngine's python
+wrapper. Before this project it did not handle outputs of mixed
+shape, and it also had considerable overhead.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="section" id="summary-of-the-final-work-product"&gt;
+&lt;h2&gt;Summary of the final work product&lt;/h2&gt;
+&lt;p&gt;A whole new repository with code and notebooks for code-generation was
+created during the first part of GSoC:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://github.com/sympy/scipy-2017-codegen-tutorial"&gt;https://github.com/sympy/scipy-2017-codegen-tutorial&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Jason Moore, Kenneth Lyons, Aaron Meurer and I (my &lt;a class="reference external" href="https://github.com/sympy/scipy-2017-codegen-tutorial/commits/master?author=bjodah"&gt;commits&lt;/a&gt;) created this for the
+tutorial in code generation with SymPy at the SciPy 2017 conference.&lt;/p&gt;
+&lt;p&gt;The majority of the work are contained in these pull-requests:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;symengine.py, &lt;a class="reference external" href="https://github.com/symengine/symengine.py/pull/112"&gt;#112&lt;/a&gt; (merged):
+Heterogeneous output in Lambdify.&lt;/li&gt;
+&lt;li&gt;symengine.py, &lt;a class="reference external" href="https://github.com/symengine/symengine.py/pull/171"&gt;#171&lt;/a&gt; (merged):
+Bug fix for heterogeneous output in Lambdify.&lt;/li&gt;
+&lt;li&gt;sympy, &lt;a class="reference external" href="https://github.com/sympy/sympy/pull/12693"&gt;#12693&lt;/a&gt;
+(merged): Extending the &lt;tt class="docutils literal"&gt;sympy.codegen.ast&lt;/tt&gt; module with new
+classes (for generating ASTs).&lt;/li&gt;
+&lt;li&gt;sympy, &lt;a class="reference external" href="https://github.com/sympy/sympy/pull/12808"&gt;#12808&lt;/a&gt;
+&amp;amp; &lt;a class="reference external" href="https://github.com/sympy/sympy/pull/13046"&gt;#13046&lt;/a&gt; (merged):
+PythonCodePrinter, MpmathPrinter, SymPyPrinter NumPyPrinter, SciPyPrinter.&lt;/li&gt;
+&lt;li&gt;sympy, &lt;a class="reference external" href="https://github.com/sympy/sympy/pull/13063"&gt;#13194&lt;/a&gt; (open):
+Add &lt;tt class="docutils literal"&gt;.codegen.rewriting&lt;/tt&gt; module.&lt;/li&gt;
+&lt;li&gt;sympy, &lt;a class="reference external" href="https://github.com/sympy/sympy/pull/13200"&gt;#13200&lt;/a&gt; (merged):
+Add &lt;tt class="docutils literal"&gt;.codegen.approximations&lt;/tt&gt; module.&lt;/li&gt;
+&lt;li&gt;sympy, &lt;a class="reference external" href="https://github.com/sympy/sympy/pull/13100"&gt;#13100&lt;/a&gt; (open):
+More AST nodes. Building on #12693, this is the biggest PR. In
+addition to improving the AST nodes it introduces
+&lt;tt class="docutils literal"&gt;.codegen.algorithms&lt;/tt&gt; as well as an internal testing module
+&lt;tt class="docutils literal"&gt;.utilities._compilation&lt;/tt&gt; which allows to compile and import/run
+strings of C/C++/Fortran code.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In addition there were smaller pull-requests made &amp;amp; merged:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;sympy_benchmarks: &lt;a class="reference external" href="https://github.com/sympy/sympy_benchmarks/pull/37"&gt;#37&lt;/a&gt;,
+&lt;a class="reference external" href="https://github.com/sympy/sympy_benchmarks/pull/38"&gt;#38&lt;/a&gt;,
+&lt;a class="reference external" href="https://github.com/sympy/sympy_benchmarks/pull/39"&gt;#39&lt;/a&gt;,
+&lt;a class="reference external" href="https://github.com/sympy/sympy_benchmarks/pull/40"&gt;#40&lt;/a&gt;:
+Benchmarks for lambidfy and common sub-expression elimination.&lt;/li&gt;
+&lt;li&gt;sympy: &lt;a class="reference external" href="https://github.com/sympy/sympy/pull/12686"&gt;#12686&lt;/a&gt;
+(Support for __abs__ in SymPy matrices),
+&lt;a class="reference external" href="https://github.com/sympy/sympy/pull/12692"&gt;#12692&lt;/a&gt; (subclass support for
+SymPy's deprecation decorator), &lt;a class="reference external" href="https://github.com/sympy/sympy/pull/12762"&gt;#12762&lt;/a&gt; (Fix floating point
+error under windows),
+&lt;a class="reference external" href="https://github.com/sympy/sympy/pull/12805"&gt;#12805&lt;/a&gt; Revert change to
+cse (performance regression), &lt;a class="reference external" href="https://github.com/sympy/sympy/pull/12764"&gt;#12764&lt;/a&gt; environment variable use,
+&lt;a class="reference external" href="https://github.com/sympy/sympy/pull/12883"&gt;#12833&lt;/a&gt; string formatting,
+&lt;a class="reference external" href="https://github.com/sympy/sympy/pull/12944"&gt;#12944&lt;/a&gt; allow relative
+path in autowrap,
+&lt;a class="reference external" href="https://github.com/sympy/sympy/pull/13063"&gt;#13063&lt;/a&gt; fix test timing script
+(and updated timings),
+&lt;a class="reference external" href="https://github.com/sympy/sympy/pull/12833"&gt;#12833 (some of the commits)&lt;/a&gt; Allow custom class
+in autowrap &amp;amp; codegen,
+&lt;a class="reference external" href="https://github.com/sympy/sympy/pull/12843"&gt;#12843 (one of the commits)&lt;/a&gt; allow changing compile
+arguments in &lt;tt class="docutils literal"&gt;CythonCodeWrapper&lt;/tt&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="section" id="detailed-review-of-the-work"&gt;
+&lt;h2&gt;Detailed review of the work&lt;/h2&gt;
+&lt;p&gt;The first weeks of the summer was mostly spent on the code generation
+material presented at the SciPy conference tutorial, in parallel with
+that work was done to handle different choices of data types in the
+printers. And new AST nodes were introduced to represent type.&lt;/p&gt;
+&lt;div class="section" id="code-for-the-tutorial"&gt;
+&lt;h3&gt;Code for the tutorial&lt;/h3&gt;
+&lt;p&gt;During the writing of this code improvements were made to the existing
+code-generation facilities and SymPy (and experience with their
+shortcomings were gained). One of the challenges in this work was that
+the attendees at the conference would be using all major platforms
+(Linux/macOS/Windows) and different Python versions, we needed to
+ensure that generating code, compiling, linking and importing worked
+all combinations.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="lambdify-in-symengine-s-python-wrapper"&gt;
+&lt;h3&gt;Lambdify in SymEngine's python wrapper&lt;/h3&gt;
+&lt;p&gt;Writing the code for the tutorial provided great test cases for the
+code-generation capabilities of SymPy. The motivation of doing code
+generation is usually that of speed (but sometimes it may be motivated
+by wanting to work with some library written in another language). An
+alternative to generating high level code which then gets compiled, is
+to go toward assembly (or some intermediate representation). SymEnigne
+had support for doing this via LLVM's JIT compiler. The Python
+bindings however needed an overhaul (something I had included in the
+time-line in my proposal), and now I wanted to use &lt;tt class="docutils literal"&gt;Lambdify&lt;/tt&gt; (the
+SymEngine version of &lt;tt class="docutils literal"&gt;sympy.lambdify&lt;/tt&gt;), and together with the help
+of Isuru Fernando we got it to work (and benchmarks for &lt;a class="reference external" href="https://pydy.org"&gt;pydy&lt;/a&gt; show that it is even faster than using the cython
+backend).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="ast-nodes"&gt;
+&lt;h3&gt;AST nodes&lt;/h3&gt;
+&lt;p&gt;I had made AST nodes in my prototype for my proposal, right at the
+start of the project I ported those to SymPy. It took some rewriting
+and discussion with Aaron (both during our weekly meetings and at the
+conference) to get it to a point where we were confident enough to
+merge it into SymPy's codebase.&lt;/p&gt;
+&lt;p&gt;One of the major challanges when designing the new classes for
+&lt;tt class="docutils literal"&gt;sympy.codegen.ast&lt;/tt&gt; was dealing with optional arguments in our
+subclasses of &lt;tt class="docutils literal"&gt;symyp.core.basic.Basic&lt;/tt&gt;. The solutions which worked
+best was to have a subclass &lt;tt class="docutils literal"&gt;sympy.codegen.Node&lt;/tt&gt; which stored such
+optinoal information as instances in a SymPy &lt;tt class="docutils literal"&gt;Tuple&lt;/tt&gt; as its last
+argument (accessible as &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;.attrs`).&lt;/span&gt; This allowed the code
+printers for Python, C and Fortran to support the same ``Variable&lt;/tt&gt; class
+for instance, where the C printer would also look for attributes
+"value_const", "volatile" etc. and the Fortran printer would look for
+e.g. "intent".&lt;/p&gt;
+&lt;p&gt;Language specific nodes have been added under their own submodules in
+&lt;tt class="docutils literal"&gt;sympy.codegen&lt;/tt&gt; (e.g. &lt;tt class="docutils literal"&gt;sympy.codegen.fnodes&lt;/tt&gt; for Fortran and
+&lt;tt class="docutils literal"&gt;sympy.codegen.cnodes&lt;/tt&gt; for C). The most common statements are now
+implmeneted, but the nodes are by far not exhaustive. There are now
+also helper functions for generating e.g. modules in
+&lt;tt class="docutils literal"&gt;sympy.codegen.pyutils&lt;/tt&gt; &amp;amp; &lt;tt class="docutils literal"&gt;sympy.codegen.futils&lt;/tt&gt; (for Python and
+Fortran respectively).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="code-printers"&gt;
+&lt;h3&gt;Code printers&lt;/h3&gt;
+&lt;p&gt;Dealing with floating point types is
+tricky since one want to be pragmatic in order for the types to be
+helpful (IEEE 754 conformance is assumed), but general enough that
+people targeting hardware with non-standard conformance can still
+generate useful code using SymPy. For example, one can now choose
+the targeted precision:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+&amp;gt;&amp;gt;&amp;gt; from sympy import ccode, symbols, Rational
+&amp;gt;&amp;gt;&amp;gt; x, tau = symbols("x, tau")
+&amp;gt;&amp;gt;&amp;gt; expr = (2*tau)**Rational(7, 2)
+&amp;gt;&amp;gt;&amp;gt; from sympy.codegen.ast import real, float80
+&amp;gt;&amp;gt;&amp;gt; ccode(expr, type_aliases={real: float80})
+'8*M_SQRT2l*powl(tau, 7.0L/2.0L)'
+&lt;/pre&gt;
+&lt;p&gt;Here we have assumed that the targeted architechture has x87 FPU (long
+double is a 10 byte extended precision floating point data type). But
+it is fully possible to generate code for some other targeted
+precision, e.g. GCC's software implemented float128:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+&amp;gt;&amp;gt;&amp;gt; from sympy.printing.ccode import C99CodePrinter
+&amp;gt;&amp;gt;&amp;gt; from sympy.codegen.ast import FloatType
+&amp;gt;&amp;gt;&amp;gt; f128 = FloatType('_Float128', 128, nmant=112, nexp=15)
+&amp;gt;&amp;gt;&amp;gt; p128 = C99CodePrinter(dict(
+...     type_aliases={real: f128},
+...     type_literal_suffixes={f128: 'Q'},
+...     type_func_suffixes={f128: 'f128'},
+...     type_math_macro_suffixes={
+...         real: 'f128',
+...         f128: 'f128'
+...     },
+...     type_macros={
+...         f128: ('__STDC_WANT_IEC_60559_TYPES_EXT__',)
+...     },
+...     math_macros={}
+... ))
+&amp;gt;&amp;gt;&amp;gt; p128.doprint(tau**Rational(7, 2))
+'powf128(tau, 7.0Q/2.0Q)'
+&lt;/pre&gt;
+&lt;p&gt;For generating Python code there was previosuly one function
+(&lt;tt class="docutils literal"&gt;sympy.printing.python&lt;/tt&gt;) which generated code dependent on SymPy.
+During the project a proper code printer for Python was introduced
+(an example of its output is shown later). The much used function
+&lt;tt class="docutils literal"&gt;lambdify&lt;/tt&gt; was also changed to use this new printer. Introducing
+such a big change without breaking backward compatibility was
+certainly a challenge, but the benefit is that the user may now
+subclass the printers to override their default behaviour and use
+their custom printer in &lt;tt class="docutils literal"&gt;lambdify&lt;/tt&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="rewriting"&gt;
+&lt;h3&gt;Rewriting&lt;/h3&gt;
+&lt;p&gt;One usual challenge when working with symbolic expressions is that
+there are many ways to write the same expresisons. For code-generation
+purposes we want to write it in a manner which maximizes performance
+and minimizes significance loss (or let the user make that choice when
+the two are at odds). Since SymPy already has a great tools for
+traversing the expression tree and applying quite advanced pattern
+matching based replacements using &lt;tt class="docutils literal"&gt;Wild&lt;/tt&gt; it was reasonably
+straightforward to implement rewriting rules for transforming e.g.
+&lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;2**x&lt;/span&gt;&lt;/tt&gt; to &lt;tt class="docutils literal"&gt;exp2(x)&lt;/tt&gt; etc. Using the same structure, rules for
+rewriting expressions to drop small elements in sums (based on a
+user-predefined bounds).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="algorithms"&gt;
+&lt;h3&gt;Algorithms&lt;/h3&gt;
+&lt;p&gt;One of the great benefitst from being able to represent abstract
+syntax trees as (largetly) language agnostic SymPy obejcts is that we
+can create functions for building these trees. Simpler numerical
+algorithms (which are ubiquitous in scientific codes) can be collected
+under &lt;tt class="docutils literal"&gt;sympy.codegen.algorithms&lt;/tt&gt;. As a first case Newton's
+algortihm was implemented:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+&amp;gt;&amp;gt;&amp;gt; from sympy import cos
+&amp;gt;&amp;gt;&amp;gt; from sympy.codegen.algorithms import newtons_method_function
+&amp;gt;&amp;gt;&amp;gt; ast = newtons_method_function(cos(x) - x**3, x)
+&amp;gt;&amp;gt;&amp;gt; print(ccode(ast))
+double newton(double x){
+   double d_x = INFINITY;
+   while (fabs(d_x) &amp;gt; 9.9999999999999998e-13) {
+      d_x = (pow(x, 3) - cos(x))/(-3*pow(x, 2) - sin(x));
+      x += d_x;
+   }
+   return x;
+}
+&lt;/pre&gt;
+&lt;p&gt;once we have the AST we can print it using the python code printer as well:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+&amp;gt;&amp;gt;&amp;gt; from sympy.printing import pycode
+&amp;gt;&amp;gt;&amp;gt; print(pycode(ast))
+def newton(x):
+    d_x = float('inf')
+    while abs(d_x) &amp;gt; 1.0e-12:
+        d_x = (x**3 - math.cos(x))/(-3*x**2 - math.sin(x))
+        x += d_x
+    return x
+&lt;/pre&gt;
+&lt;p&gt;or the Fortran code printer:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+&amp;gt;&amp;gt;&amp;gt; from sympy.printing import fcode
+&amp;gt;&amp;gt;&amp;gt; print(fcode(ast, source_format='free', standard=2003))
+real*8 function newton(x)
+real*8 :: x
+real*8 :: d_x = (huge(0d0) + 1)
+do while (abs(d_x) &amp;gt; 1.0d-12)
+   d_x = (x**3 - cos(x))/(-3*x**2 - sin(x))
+   x = x + d_x
+end do
+newton = x
+end function
+&lt;/pre&gt;
+&lt;p&gt;Newton's method is quite simple, but what makes SymPy suitable for
+this is that it needs the ratio between the function and its
+derivative.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="conclusion"&gt;
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;I think that I managed to address all parts of my proposal. That being
+said, there is still a lot of potential to expand the
+&lt;tt class="docutils literal"&gt;sympy.codegen&lt;/tt&gt; module. But now there are purposefully made base
+classes for creating AST node classes (&lt;tt class="docutils literal"&gt;sympy.codegen.ast.Token&lt;/tt&gt; &amp;amp;
+&lt;tt class="docutils literal"&gt;sympy.codegen.ast.Node&lt;/tt&gt;), the language agnostic ones are general enough
+that an algorithm represented as a single AST can be printed as
+Python/C/Fortran. At some level code will still be needed to be
+written manually (presumably as templates), but the amount of template
+rendering logic can be significantly reduced. Having algorithm AST
+factories such as the one for Newton's method in
+&lt;tt class="docutils literal"&gt;sympy.codegen.ast.algorithms&lt;/tt&gt; is also exciting since those
+algorithms can be unit-tested as part of SymPy. Ideas for furthor work
+on code-generation with SymPy have been added to &lt;a class="reference external" href="https://github.com/sympy/sympy/wiki/GSoC-2018-Ideas#code-generation"&gt;the list&lt;/a&gt;
+of potential ideas for next years GSoC.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="post-gsoc"&gt;
+&lt;h2&gt;Post-GSoC&lt;/h2&gt;
+&lt;p&gt;I plan to continue to contribute to the SymPy project, and start using
+the new resources in my own research. Working with the new classes
+should also allow us to refine them if needed (preferably before the
+next release is tagged in order to avoid having to introduce
+deprecation cycles). SymPy is an amazing project with
+a great community. I'm really grateful to Google for funding me (and
+others) to do a full summers work on this project.&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;</description><category>Python</category><category>SymPy</category><guid>http://bjodah.github.io/blog/posts/gsoc-report.html</guid><pubDate>Mon, 28 Aug 2017 19:15:00 GMT</pubDate></item><item><title>Status update week 13 GSoC</title><link>http://bjodah.github.io/blog/posts/gsoc-week13.html</link><dc:creator>Björn Dahlgren</dc:creator><description>&lt;div&gt;&lt;p&gt;This was the last week of work on GSoC. I have been hard at work
+improving documentation and examples for the code.&lt;/p&gt;
+&lt;div class="section" id="adding-much-needed-documentaiton"&gt;
+&lt;h2&gt;Adding much needed documentaiton&lt;/h2&gt;
+&lt;p&gt;I've spent the weekend adding examples and writing up documentation
+for my big PR &lt;a class="reference external" href="https://github.com/sympy/sympy/pull/13100"&gt;#13100&lt;/a&gt;
+which is not yet merged. I am quite excited how this PR turned out and
+I am happy with the design of the underlying AST nodes.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="rewriting"&gt;
+&lt;h2&gt;Rewriting&lt;/h2&gt;
+&lt;p&gt;A new submodule &lt;tt class="docutils literal"&gt;.codegen.rewriting&lt;/tt&gt; was added (in &lt;a class="reference external" href="https://github.com/sympy/sympy/pull/13194"&gt;#13194&lt;/a&gt;), this allows a user to
+rewrite expressions using special math functions. The provided rules
+are those to rewrite to C99's special math functions (&lt;tt class="docutils literal"&gt;expm1&lt;/tt&gt;,
+&lt;tt class="docutils literal"&gt;log1p&lt;/tt&gt; etc.). I think it will be a useful addition (I have myself
+had the need for exactly this in my own research). The design is quite
+simple thanks to the excellt &lt;tt class="docutils literal"&gt;replace&lt;/tt&gt; function in SymPy. There are
+still some corner cases (I have an "xfailed" test checked in for
+example).&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;</description><category>Python</category><category>SymPy</category><guid>http://bjodah.github.io/blog/posts/gsoc-week13.html</guid><pubDate>Mon, 28 Aug 2017 19:15:00 GMT</pubDate></item><item><title>Status update week 12 GSoC</title><link>http://bjodah.github.io/blog/posts/gsoc-week12.html</link><dc:creator>Björn Dahlgren</dc:creator><description>&lt;div&gt;&lt;div class="section" id="working-on-new-ast-nodes"&gt;
+&lt;h2&gt;Working on new AST nodes&lt;/h2&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://github.com/sympy/sympy/pull/13100"&gt;#13100&lt;/a&gt; is shaping up to
+be the largest PR of my GSoC project. The design of the new AST nodes
+especially (&lt;tt class="docutils literal"&gt;Token&lt;/tt&gt;) is really helpful. But there is still a design
+issue: some nodes would naturally take different arguments depending
+on what language is being targeted. So I came to the conclusion that I
+needed some way of representing attributes. The solution I came up
+with would be to have a slightly more capable &lt;tt class="docutils literal"&gt;Node&lt;/tt&gt; class
+(subclassing &lt;tt class="docutils literal"&gt;Token&lt;/tt&gt;) which would in turn be subclassed from for
+nodes that need attributes.&lt;/p&gt;
+&lt;p&gt;I also enhanced the printing of both of these classes and introduced a
+&lt;tt class="docutils literal"&gt;String&lt;/tt&gt; class, which in contrast to &lt;tt class="docutils literal"&gt;Symbol&lt;/tt&gt; does not accept
+assumptions in its constructor, and does not have implied printing
+rules of sub- &amp;amp; superscript etc.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="adding-codegen-algorithms"&gt;
+&lt;h2&gt;Adding &lt;tt class="docutils literal"&gt;.codegen.algorithms&lt;/tt&gt;&lt;/h2&gt;
+&lt;p&gt;A new submodule &lt;tt class="docutils literal"&gt;.codegen.algorithms&lt;/tt&gt; was added, containing a AST
+generating function for Newton's method. This makes a nice design
+target for both the printers and AST nodes: being able to express the
+same AST in differnt languages is definitely an indication that we
+have a versatile printing system.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="compiling-code-on-the-fly"&gt;
+&lt;h2&gt;Compiling code on the fly&lt;/h2&gt;
+&lt;p&gt;Introducing the &lt;tt class="docutils literal"&gt;.codegen.algorithms&lt;/tt&gt; module also made the need to
+test generated code during CI runs clear. Jason Moore has previously
+mentioned that he thinks one of my python packages (&lt;a class="reference external" href="https://github.com/bjodah/pycompilation"&gt;pycompilation&lt;/a&gt;) would fit nicely into
+SymPy. I've been a bit relucatant to port it over since I have felt
+that it has not seen enough testing (and only under Linux). But now
+there was a need and we could start by making it an internal package
+only used by our own tests. That way it will get to mature without
+having to worry about deprecation cycles. And once more platforms are
+added to SymPy's CI configuration it would also see testing on other
+platforms (using AppVeyor for SymPy has been discussed for a long
+while now).&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;</description><category>Python</category><category>SymPy</category><guid>http://bjodah.github.io/blog/posts/gsoc-week12.html</guid><pubDate>Mon, 21 Aug 2017 17:30:00 GMT</pubDate></item><item><title>Status update week 11 GSoC</title><link>http://bjodah.github.io/blog/posts/gsoc-week11.html</link><dc:creator>Björn Dahlgren</dc:creator><description>&lt;div&gt;&lt;div class="section" id="checking-in-the-new-ast-node-types"&gt;
+&lt;h2&gt;Checking in the new AST node types&lt;/h2&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://github.com/sympy/sympy/pull/12693"&gt;#12693&lt;/a&gt; got merged 🎉.
+It took a few rewrites essentially but I fell that the design of the
+new nodes will allow us to scale with reasonable maintance cost when
+adding new language specific nodes. The base class for new AST nodes
+(&lt;tt class="docutils literal"&gt;Token&lt;/tt&gt;) to sublcass from allows one to implement nodes in an
+expressive manner by setting &lt;tt class="docutils literal"&gt;__slots__&lt;/tt&gt;. The constructor of
+&lt;tt class="docutils literal"&gt;Token&lt;/tt&gt; then sets the &lt;tt class="docutils literal"&gt;.args&lt;/tt&gt; of &lt;tt class="docutils literal"&gt;Basic&lt;/tt&gt; based on &lt;tt class="docutils literal"&gt;__slots__&lt;/tt&gt;
+this has the benefit that you need not write setters and getters using
+&lt;tt class="docutils literal"&gt;@property&lt;/tt&gt; decorators (which quickly becomes tiresome when you have
+many classes).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="checking-in-the-refactored-pythonprinter-and-changes-to-lambdify"&gt;
+&lt;h2&gt;Checking in the refactored PythonPrinter and changes to lambdify&lt;/h2&gt;
+&lt;p&gt;Finally the challenging work of refactoring &lt;tt class="docutils literal"&gt;lambdify&lt;/tt&gt; got merged
+into SymPy's master branch: &lt;a class="reference external" href="https://github.com/sympy/sympy/pull/13046"&gt;#13046&lt;/a&gt;. We eventually decided
+to drop the contents of the old translations dictionaries but leave
+them be (in an empty state) in case users were modifying those in
+their code. Hopefully this approach doesn't break any code out
+there. Given how popular &lt;tt class="docutils literal"&gt;lambdify&lt;/tt&gt; is among SymPy's users, it is a
+bit worrying that the test suite is not that extensive. I do remember
+a google engineer mentioning that the follow the "Beyonce principle":
+"I you liked it you should have put a test on it". Funny at is may be
+I hope I don't need to defend these changes with that arguement.&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;</description><category>Python</category><category>SymPy</category><guid>http://bjodah.github.io/blog/posts/gsoc-week11.html</guid><pubDate>Mon, 14 Aug 2017 18:17:00 GMT</pubDate></item><item><title>Status update week 10 GSoC</title><link>http://bjodah.github.io/blog/posts/gsoc-week10.html</link><dc:creator>Björn Dahlgren</dc:creator><description>&lt;div&gt;&lt;div class="section" id="refactoring-lambdify"&gt;
+&lt;h2&gt;Refactoring lambdify&lt;/h2&gt;
+&lt;p&gt;In my work to refactor &lt;tt class="docutils literal"&gt;lambdify&lt;/tt&gt; I had come up with a solution
+where I would dynamically subclass the CodePrinters in &lt;tt class="docutils literal"&gt;lambdify&lt;/tt&gt; to
+add translations from the old translation dictionaries. I was not
+happy with the solution and I don't think Aaron was either, we decided
+to keep the old import mechanism of lambdify which populated the
+namespace (instead of trying to generate code for the used imports
+which I had been trying).&lt;/p&gt;
+&lt;p&gt;So the work on refactoring &lt;tt class="docutils literal"&gt;lambdify&lt;/tt&gt; has continued in &lt;a class="reference external" href="https://github.com/sympy/sympy/pull/13046"&gt;#13046&lt;/a&gt;. And with &lt;cite&gt;this
+&amp;lt;https://github.com/sympy/sympy/commit/265314fa63f5a662a7a187913d51d55a852b503c&amp;gt;&lt;/cite&gt;
+commit I hope we are close to getting the new version of &lt;tt class="docutils literal"&gt;lambdify&lt;/tt&gt;
+out the door.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="new-floattype-representation"&gt;
+&lt;h2&gt;New FloatType representation&lt;/h2&gt;
+&lt;p&gt;With some underlying assumptions about floating point representation
+(two's complement etc.) I have now a &lt;a class="reference external" href="https://github.com/sympy/sympy/commit/18ea9a583509f28bc88102e73ebff8e0443d7988"&gt;new representation&lt;/a&gt;
+of &lt;tt class="docutils literal"&gt;FloatType&lt;/tt&gt;. I'm much happier with this representation and I
+think with it &lt;a class="reference external" href="https://github.com/sympy/sympy/pull/12693"&gt;#12693&lt;/a&gt; is
+much closer to getting merged.&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;</description><category>Python</category><category>SymPy</category><guid>http://bjodah.github.io/blog/posts/gsoc-week10.html</guid><pubDate>Mon, 07 Aug 2017 19:03:00 GMT</pubDate></item><item><title>Status update week 8 GSoC</title><link>http://bjodah.github.io/blog/posts/gsoc-week8.html</link><dc:creator>Björn Dahlgren</dc:creator><description>&lt;p&gt;I finished up the new &lt;tt class="docutils literal"&gt;PythonCodePrinter&lt;/tt&gt; in &lt;a class="reference external" href="https://github.com/sympy/sympy/pull/12808"&gt;#12808&lt;/a&gt;. And I have started work
+locally on having the NumPy- and Mpmath-printers subclass this new
+CodePrinter. Both of these printers were previously subclassing
+&lt;tt class="docutils literal"&gt;LambdaPrinter&lt;/tt&gt;, so the change is a bit intrusive with lots of
+failing tests in the SymPy test suite. But this is a prerequisite for
+changing &lt;tt class="docutils literal"&gt;sympy.utilities.lambdify&lt;/tt&gt; to accept custom &lt;tt class="docutils literal"&gt;CodePrinter&lt;/tt&gt;
+subclasses as user input.&lt;/p&gt;</description><category>Python</category><category>SymPy</category><guid>http://bjodah.github.io/blog/posts/gsoc-week8.html</guid><pubDate>Mon, 24 Jul 2017 16:42:00 GMT</pubDate></item><item><title>Status update week 9 GSoC</title><link>http://bjodah.github.io/blog/posts/gsoc-week9.html</link><dc:creator>Björn Dahlgren</dc:creator><description>&lt;div&gt;&lt;p&gt;This week has been mostly spent on two refactoring lambdify and
+enhancing the representation of types in our AST nodes under &lt;tt class="docutils literal"&gt;.codegen.ast&lt;/tt&gt;&lt;/p&gt;
+&lt;div class="section" id="refactoring-lambdify"&gt;
+&lt;h2&gt;Refactoring lambdify&lt;/h2&gt;
+&lt;p&gt;The tricky business of chaning &lt;tt class="docutils literal"&gt;lambdify&lt;/tt&gt; to use our new CodePrinter
+(or more importantly: letting the user pass their own subclasses
+continues).&lt;/p&gt;
+&lt;p&gt;There are currently dictionaries in &lt;tt class="docutils literal"&gt;sympy.utilities.lambdify&lt;/tt&gt; which
+contains translations of SymPy entities to functions in corresponding
+targeted python module (e.g. NumPy functions if the numpy module is
+targeted). This week I've &lt;a class="reference external" href="https://github.com/sympy/sympy/pull/13046"&gt;worked&lt;/a&gt;
+toward removing dependence on these,
+and instead rely on the user providing print methods instead.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="work-on-types-in-codegen-ast"&gt;
+&lt;h2&gt;Work on types in &lt;tt class="docutils literal"&gt;.codegen.ast&lt;/tt&gt;&lt;/h2&gt;
+&lt;p&gt;In my &lt;a class="reference external" href="https://github.com/sympy/sympy/pull/12693"&gt;WIP PR for AST nodes&lt;/a&gt; I have made more type
+related changes. I've also changed the Fortran printer to use the new
+type information. I am not 100% satisfied with the way the floating
+point types are being represented at the moment (I'm using floating
+point numbers to store the max, min and epsilon values for example).
+I will probably rewrite those classes to use the underlying number of
+bits for mantissa and exponent as the canonical data for the class
+instances.&lt;/p&gt;
+&lt;p&gt;I finished up the new &lt;tt class="docutils literal"&gt;PythonCodePrinter&lt;/tt&gt; in &lt;a class="reference external" href="https://github.com/sympy/sympy/pull/12808"&gt;#12808&lt;/a&gt;. And I have started work
+locally on having the NumPy- and Mpmath-printers subclass this new
+CodePrinter. Both of these printers were previously subclassing
+&lt;tt class="docutils literal"&gt;LambdaPrinter&lt;/tt&gt;, so the change is a bit intrusive with lots of
+failing tests in the SymPy test suite. But this is a prerequisite for
+changing &lt;tt class="docutils literal"&gt;sympy.utilities.lambdify&lt;/tt&gt; to accept custom &lt;tt class="docutils literal"&gt;CodePrinter&lt;/tt&gt;
+subclasses as user input.&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;</description><category>Python</category><category>SymPy</category><guid>http://bjodah.github.io/blog/posts/gsoc-week9.html</guid><pubDate>Mon, 24 Jul 2017 16:42:00 GMT</pubDate></item><item><title>Status update week 7 GSoC</title><link>http://bjodah.github.io/blog/posts/gsoc-week7.html</link><dc:creator>Björn Dahlgren</dc:creator><description>&lt;div&gt;&lt;p&gt;This was an exciting week. I flew to Autstin, TX to attend the SciPy 2017 conference.
+On Monday morning Aaron Meurer, Jason Moore, Kenneth Lyons and I gave our new tutorial
+on code-generation. You can view the tutorial here:&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="http://www.sympy.org/scipy-2017-codegen-tutorial/"&gt;http://www.sympy.org/scipy-2017-codegen-tutorial/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;You can even follow along the tutorial video in a jupyter notebook in
+your browser (thanks to the generous hosting by the folks at
+&lt;tt class="docutils literal"&gt;mybinder.org&lt;/tt&gt;).&lt;/p&gt;
+&lt;p&gt;It was nice to see that quite a few people were using SymPy for
+code-generation in the community. And coincidentally a proper Python
+code printer was requested by some users (this is on my todo-list for
+this summers project).&lt;/p&gt;
+&lt;p&gt;At the end of the conference there were also sprints, and SymPy did
+sprint as well. For my project, the greatest benefit from the sprints
+was that I got to discuss design choices wiht Aaron. We now have a
+plan for how to deal with types in the code-printers, so now it is
+"only" a matter of writing up the code to get it to work.&lt;/p&gt;&lt;/div&gt;</description><category>Python</category><category>SymPy</category><guid>http://bjodah.github.io/blog/posts/gsoc-week7.html</guid><pubDate>Mon, 17 Jul 2017 13:32:00 GMT</pubDate></item><item><title>Status update week 6 GSoC</title><link>http://bjodah.github.io/blog/posts/gsoc-week6.html</link><dc:creator>Björn Dahlgren</dc:creator><description>&lt;div&gt;&lt;div class="section" id="finishing-up-tutorial-material"&gt;
+&lt;h2&gt;Finishing up tutorial material&lt;/h2&gt;
+&lt;p&gt;We have been busy adding the final touches to the upcoming tutorial. (you can read
+about the tutorial in ealier blog posts).&lt;/p&gt;
+&lt;p&gt;I thought I would share a technique for doing exercises in Jupyter notebooks.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="the-exercise-magic"&gt;
+&lt;h2&gt;The %exercise magic&lt;/h2&gt;
+&lt;p&gt;There are quite a few ways to provide exercises in jupyter notebooks
+(eventually I think there will be a de facto standard, either as a
+separate package or included with the notebook itself). But I
+essentially wanted a special version of &lt;tt class="docutils literal"&gt;%load&lt;/tt&gt; which would load a
+file into a cell but replace some parts of the expressions with gaps
+for the tutorial attendee to fill in.&lt;/p&gt;
+&lt;p&gt;Thanks to IPython being a popular project there was already &lt;a class="reference external" href="https://stackoverflow.com/a/38103336/790973"&gt;a
+solution&lt;/a&gt;
+posted on StackOverflow which did nearly exactly this.&lt;/p&gt;
+&lt;p&gt;After some tweaking I came up with this&lt;/p&gt;
+&lt;pre class="code python"&gt;&lt;a name="rest_code_3c1b85fc4cd649e2a6061f6618eb86e0-1"&gt;&lt;/a&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;IPython.core.magic&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;ipym&lt;/span&gt;
+&lt;a name="rest_code_3c1b85fc4cd649e2a6061f6618eb86e0-2"&gt;&lt;/a&gt;
+&lt;a name="rest_code_3c1b85fc4cd649e2a6061f6618eb86e0-3"&gt;&lt;/a&gt;&lt;span class="nd"&gt;@ipym.magics_class&lt;/span&gt;
+&lt;a name="rest_code_3c1b85fc4cd649e2a6061f6618eb86e0-4"&gt;&lt;/a&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;ExerciseMagic&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ipym&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Magics&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;a name="rest_code_3c1b85fc4cd649e2a6061f6618eb86e0-5"&gt;&lt;/a&gt;
+&lt;a name="rest_code_3c1b85fc4cd649e2a6061f6618eb86e0-6"&gt;&lt;/a&gt;    &lt;span class="nd"&gt;@ipym.line_magic&lt;/span&gt;
+&lt;a name="rest_code_3c1b85fc4cd649e2a6061f6618eb86e0-7"&gt;&lt;/a&gt;    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;exercise&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;line&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;cell&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;a name="rest_code_3c1b85fc4cd649e2a6061f6618eb86e0-8"&gt;&lt;/a&gt;        &lt;span class="n"&gt;token&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;'  # EXERCISE: '&lt;/span&gt;
+&lt;a name="rest_code_3c1b85fc4cd649e2a6061f6618eb86e0-9"&gt;&lt;/a&gt;        &lt;span class="n"&gt;out_lst&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;
+&lt;a name="rest_code_3c1b85fc4cd649e2a6061f6618eb86e0-10"&gt;&lt;/a&gt;        &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;ln&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;line&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;readlines&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+&lt;a name="rest_code_3c1b85fc4cd649e2a6061f6618eb86e0-11"&gt;&lt;/a&gt;            &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;token&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;ln&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;a name="rest_code_3c1b85fc4cd649e2a6061f6618eb86e0-12"&gt;&lt;/a&gt;                &lt;span class="n"&gt;pre&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;post&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;ln&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;split&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;token&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_3c1b85fc4cd649e2a6061f6618eb86e0-13"&gt;&lt;/a&gt;                &lt;span class="n"&gt;out_lst&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;append&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pre&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;replace&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;post&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;rstrip&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s1"&gt;'&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="s1"&gt;'???'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="s1"&gt;'&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s1"&gt;'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_3c1b85fc4cd649e2a6061f6618eb86e0-14"&gt;&lt;/a&gt;            &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;a name="rest_code_3c1b85fc4cd649e2a6061f6618eb86e0-15"&gt;&lt;/a&gt;                &lt;span class="n"&gt;out_lst&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;append&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ln&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_3c1b85fc4cd649e2a6061f6618eb86e0-16"&gt;&lt;/a&gt;        &lt;span class="n"&gt;out_str&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;'# &lt;/span&gt;&lt;span class="si"&gt;%e&lt;/span&gt;&lt;span class="s1"&gt;xercise {0}&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s1"&gt;{1}'&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;line&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;''&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;out_lst&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;a name="rest_code_3c1b85fc4cd649e2a6061f6618eb86e0-17"&gt;&lt;/a&gt;        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_next_input&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;out_str&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;replace&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_3c1b85fc4cd649e2a6061f6618eb86e0-18"&gt;&lt;/a&gt;
+&lt;a name="rest_code_3c1b85fc4cd649e2a6061f6618eb86e0-19"&gt;&lt;/a&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;load_ipython_extension&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ipython&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;a name="rest_code_3c1b85fc4cd649e2a6061f6618eb86e0-20"&gt;&lt;/a&gt;    &lt;span class="n"&gt;ipython&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;register_magics&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ExerciseMagic&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a name="rest_code_3c1b85fc4cd649e2a6061f6618eb86e0-21"&gt;&lt;/a&gt;
+&lt;a name="rest_code_3c1b85fc4cd649e2a6061f6618eb86e0-22"&gt;&lt;/a&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;unload_ipython_extension&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ipython&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;a name="rest_code_3c1b85fc4cd649e2a6061f6618eb86e0-23"&gt;&lt;/a&gt;    &lt;span class="k"&gt;pass&lt;/span&gt;
+&lt;/pre&gt;&lt;p&gt;The downside of using this magic is that reloading the cell requires
+the user to uncomment the &lt;tt class="docutils literal"&gt;# %exercise ...&lt;/tt&gt; line, delete the rest of
+the cell and rerun it. This will only feel natural if you've already
+worked with the &lt;tt class="docutils literal"&gt;%load&lt;/tt&gt; magic before (which in my humble opinion
+is suboptimal since you often want bi-directional editing whenever you
+pull out that magic).&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;</description><category>Python</category><category>SymPy</category><guid>http://bjodah.github.io/blog/posts/gsoc-week6.html</guid><pubDate>Sat, 08 Jul 2017 19:19:00 GMT</pubDate></item><item><title>Status update week 5 GSoC</title><link>http://bjodah.github.io/blog/posts/gsoc-week5.html</link><dc:creator>Björn Dahlgren</dc:creator><description>&lt;div&gt;&lt;div class="section" id="continued-work-on-tutorial-material"&gt;
 &lt;h2&gt;Continued work on tutorial material&lt;/h2&gt;
 &lt;p&gt;Cross-platform work is always a bit tricky. Python does in general
 a great job of allowing programs to access the filesystem, network etc
@@ -69,360 +545,4 @@ material (and hopefully iron out any related issues in the rc).&lt;/p&gt;
 &lt;p&gt;At the end of the week it's time for me to fly to the US to attend
 SciPy 2017. I have high expectations and believe that it will be a
 great catalyst for the rest of the summers work on code-generation.&lt;/p&gt;
-&lt;/div&gt;&lt;/div&gt;</description><category>Python</category><category>SymPy</category><guid>http://bjodah.github.io/blog/posts/gsoc-week5.html</guid><pubDate>Mon, 03 Jul 2017 18:37:00 GMT</pubDate></item><item><title>Status update week 4 GSoC</title><link>http://bjodah.github.io/blog/posts/gsoc-week4.html</link><dc:creator>Björn Dahlgren</dc:creator><description>&lt;div&gt;&lt;div class="section" id="continued-work-on-tutorial-material"&gt;
-&lt;h2&gt;Continued work on tutorial material&lt;/h2&gt;
-&lt;p&gt;During the past week I got &lt;a class="reference external" href="https://mybinder.org"&gt;binder&lt;/a&gt; to work with
-our tutorial material. Using &lt;tt class="docutils literal"&gt;environment.yml&lt;/tt&gt; did require that we had
-a conda package available. So I set up our instance of &lt;a class="reference external" href="https://drone.io"&gt;Drone IO&lt;/a&gt; to push to the &lt;tt class="docutils literal"&gt;sympy&lt;/tt&gt; conda channel. The new
-base dockerimage used in the beta version of binder (v2) does not
-contain gcc by default. This prompted me to add gcc to our
-&lt;tt class="docutils literal"&gt;environment.yml&lt;/tt&gt;, unfortunately this breaks the build process:&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-Attempting to roll back.
-LinkError: post-link script failed for package defaults::gcc-4.8.5-7
-running your command again with `-v` will provide additional information
-location of failed script: /opt/conda/bin/.gcc-post-link.sh
-==&amp;gt; script messages &amp;lt;==
-&amp;lt;None&amp;gt;
-&lt;/pre&gt;
-&lt;p&gt;I've reached out on their gitter channel, we'll see if anyone knows
-what's up. If we cannot work around this we will have two options:&lt;/p&gt;
-&lt;ol class="arabic simple"&gt;
-&lt;li&gt;Accept that the binder version cannot compile any generated code&lt;/li&gt;
-&lt;li&gt;Try to use binder with a Dockerimage based on the one used for CI
-tests (with the difference that it will include a prebuilt conda
-environment from &lt;tt class="docutils literal"&gt;environment.yml&lt;/tt&gt;)&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;I hope that the second approach should work unless we hit a image size
-limitation (and perhaps we need a special base image, I haven't looked
-into those details yet).&lt;/p&gt;
-&lt;p&gt;Jason has been producing some really high quality tutorial notebooks
-and left lots of constructive feedback on my initial work. Based on
-his feedback I've started reworking the code-generation examples not
-to use classes as extensively. I've also added some introductory
-notebooks: numerical integration of ODEs in general &amp;amp; intro to SymPy's
-cryptically named &lt;tt class="docutils literal"&gt;lambdify&lt;/tt&gt; (the latter notebook is still to be
-merged into master).&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="section" id="work-on-sympy-for-version-1-1"&gt;
-&lt;h2&gt;Work on SymPy for version 1.1&lt;/h2&gt;
-&lt;p&gt;After last weeks mentor meeting we decided that we would try to
-&lt;a class="reference external" href="https://github.com/sympy/sympy/pull/12805"&gt;revert&lt;/a&gt; a change to
-&lt;tt class="docutils literal"&gt;sympy.cse&lt;/tt&gt; (a function which performs common subexpression
-elimination). I did spend some time profiling the new implementation.
-However, I was not able to find any obvious bottle-necks, and given
-that it is not the main scope of my project I did not pursue this any
-further at the moment.&lt;/p&gt;
-&lt;p&gt;I also &lt;a class="reference external" href="https://github.com/sympy/sympy/pull/12808"&gt;just started&lt;/a&gt;
-looking at introducing a Python code printer. There is a
-&lt;tt class="docutils literal"&gt;PythonPrinter&lt;/tt&gt; in SymPy right now, although it assumes that
-&lt;tt class="docutils literal"&gt;SymPy&lt;/tt&gt; is available. The plan right now is to rename to old
-printer to &lt;tt class="docutils literal"&gt;SymPyCodePrinter&lt;/tt&gt; and have the new printer primarily print
-expressions, which is what the &lt;tt class="docutils literal"&gt;CodePrinter&lt;/tt&gt; class does best, even
-though it can be "coerced" into emitting statements.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="section" id="plans-for-the-upcoming-week"&gt;
-&lt;h2&gt;Plans for the upcoming week&lt;/h2&gt;
-&lt;p&gt;As the conference approaches the work intensifies both with respect to
-finishing up the tutorial material and fixing blocking issues for a
-SymPy 1.1 release. Working on the tutorial material helps finding
-things to improve code-generation wise (just today I opened a &lt;a class="reference external" href="https://github.com/sympy/sympy/issues/12810"&gt;minor
-issue&lt;/a&gt; just to realize
-that my &lt;a class="reference external" href="https://github.com/sympy/sympy/pull/12693"&gt;"work-in-progress" pull-request&lt;/a&gt; from an earlier week
-(which I intend to get back working on next week too) actually fixes
-said issue.&lt;/p&gt;
-&lt;/div&gt;&lt;/div&gt;</description><category>Python</category><category>SymPy</category><guid>http://bjodah.github.io/blog/posts/gsoc-week4.html</guid><pubDate>Mon, 26 Jun 2017 19:39:00 GMT</pubDate></item><item><title>Status update week 3 GSoC</title><link>http://bjodah.github.io/blog/posts/gsoc-week3.html</link><dc:creator>Björn Dahlgren</dc:creator><description>&lt;div&gt;&lt;div class="section" id="fast-callbacks-from-sympy-using-symengine"&gt;
-&lt;h2&gt;Fast callbacks from SymPy using SymEngine&lt;/h2&gt;
-&lt;p&gt;My main focus the past week has been to get &lt;tt class="docutils literal"&gt;Lambdify&lt;/tt&gt; in SymEngine
-to work with multiple output parameters. Last year Isuru Fernando lead
-the &lt;a class="reference external" href="https://github.com/symengine/symengine/pull/1094"&gt;development&lt;/a&gt; to support jit-compiled callbacks using LLVM in SymEngine.
-I started work on leveraging this in the Python wrappers of SymEngine
-but my work stalled due to time constraints.&lt;/p&gt;
-&lt;p&gt;But since it is very much related to code generation in SymPy I did
-put it into my time-line (later in the summer) in my GSoC
-application. But with the upcoming SciPy conference, and the fact that
-it would make a nice addition to our tutorial, I have put in &lt;a class="reference external" href="https://github.com/symengine/symengine.py/pull/112"&gt;work&lt;/a&gt; to
-get this done earlier than first planned.&lt;/p&gt;
-&lt;p&gt;Another thing on my to-do-list from last week was to get &lt;tt class="docutils literal"&gt;numba&lt;/tt&gt; working
-with &lt;tt class="docutils literal"&gt;lambdify&lt;/tt&gt;. But for this to work we need to wait for a new upstream
-release of &lt;tt class="docutils literal"&gt;numba&lt;/tt&gt; (which they are hoping to release before the SciPy
-&lt;a class="reference external" href="https://scipy2017.scipy.org/ehome/220975/493418/"&gt;conference&lt;/a&gt;).&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="section" id="status-of-codegen-tutorial-material"&gt;
-&lt;h2&gt;Status of codegen-tutorial material&lt;/h2&gt;
-&lt;p&gt;I have not added any new tutorial material this week, but have been
-working on making all notebooks work under all targeted operating
-systems. However, every change to the notebooks have to be checked
-on all operating systems using both Python 2 and Python 3. This
-becomes tedious very quickly so I decided to enable continuous
-integration on our &lt;a class="reference external" href="https://github.com/sympy/scipy-2017-codegen-tutorial"&gt;repository&lt;/a&gt;. I followed conda-forges approach: Travis CI
-for OS X, CircleCI for Linux and AppVeyor for Windows (and a private
-CI server for another Linux setup). And last night
-I &lt;em&gt;finally&lt;/em&gt; got green light on all 4 of our CI services.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="section" id="plans-for-the-upcoming-week"&gt;
-&lt;h2&gt;Plans for the upcoming week&lt;/h2&gt;
-&lt;p&gt;We have had a performance &lt;a class="reference external" href="https://github.com/sympy/sympy/issues/12411"&gt;regression&lt;/a&gt; in &lt;tt class="docutils literal"&gt;sympy.cse&lt;/tt&gt; which has bit me
-multiple times this week. I managed to &lt;a class="reference external" href="https://github.com/sympy/sympy_benchmarks/pull/38"&gt;craft&lt;/a&gt; a small test case
-indicating that the algorithmic complexity of the new function is
-considerably worse than before (effectively making it useless for many
-applications). In my weekly mentor-meeting (with Aaron) we discussed
-possibly reverting that &lt;a class="reference external" href="https://github.com/sympy/sympy/pull/11232"&gt;change&lt;/a&gt;. I will first try to see if I can
-identify easy-to-fix bottlenecks by profiling the code. But the
-risk is that it is too much work to be done before the upcoming
-new release of SymPy, and then we will simply revert for now (choosing
-speed over extensiveness of the sub-expression elimination).&lt;/p&gt;
-&lt;p&gt;I still need to test the notebooks using not only &lt;tt class="docutils literal"&gt;msvc&lt;/tt&gt; under Windows
-(which is currently used in the AppVeyor tests), but also &lt;tt class="docutils literal"&gt;mingw&lt;/tt&gt;. I did
-manage to get it working locally but there is still some effort left
-in order to make this work on AppVeyor. It's extra tricky since there
-is a &lt;a class="reference external" href="https://bugs.python.org/issue21821"&gt;bug&lt;/a&gt; in &lt;tt class="docutils literal"&gt;distutils&lt;/tt&gt; in Python 3 which causes the detection of mingw
-to fail. So we need to either:&lt;/p&gt;
-&lt;ul class="simple"&gt;
-&lt;li&gt;Patch &lt;tt class="docutils literal"&gt;cygwincompiler.py&lt;/tt&gt; in &lt;tt class="docutils literal"&gt;distutils&lt;/tt&gt; (which I believe we can do
-if we create a conda package for our tutorial material).&lt;/li&gt;
-&lt;li&gt;...or use something else than &lt;tt class="docutils literal"&gt;pyximport&lt;/tt&gt; (I'm hesitant to do this
-before the conference).&lt;/li&gt;
-&lt;li&gt;...or provide a gcc executable (not a &lt;tt class="docutils literal"&gt;.bat&lt;/tt&gt; file) that simply
-spawns &lt;tt class="docutils literal"&gt;gcc.bat&lt;/tt&gt; (but that executable would need to be compiled
-during build of our conda package).&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Based on my work on making the CI services work, we will need to
-provide test scripts for the participants to run. We need to provide
-the organizers with these scripts by June 27th so this needs to be
-decided upon during next week. I am leaning towards providing an
-&lt;tt class="docutils literal"&gt;environment.yml&lt;/tt&gt; file together with a simple instruction of
-activating said environment, e.g.:&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-$ conda env create -f environment.yml
-$ source activate codegen17
-$ python -c "import scipy2017codegen as cg; cg.test()"
-&lt;/pre&gt;
-&lt;p&gt;This could even be tested on our CI services.&lt;/p&gt;
-&lt;p&gt;I also intend to add a (perhaps final) tutorial notebook for chemical
-kinetics where we also consider diffusion. We will solve the PDE using
-the method of lines. The addition of a spatial dimension in this way
-is simple in principle, things do tend to become tricky when handling
-boundary conditions though. I will try to use the simplest possible
-treatment in order to avoid taking focus from what we are teaching
-(code-generation).&lt;/p&gt;
-&lt;p&gt;It is also my hope that this combined diffusion-reaction model is a
-good candidate for &lt;tt class="docutils literal"&gt;ufuncify&lt;/tt&gt; from
-&lt;tt class="docutils literal"&gt;sympy.utilities.autowrap&lt;/tt&gt;.&lt;/p&gt;
-&lt;/div&gt;&lt;/div&gt;</description><category>Python</category><category>SymPy</category><guid>http://bjodah.github.io/blog/posts/gsoc-week3.html</guid><pubDate>Mon, 19 Jun 2017 21:15:00 GMT</pubDate></item><item><title>Status update week 2 GSoC</title><link>http://bjodah.github.io/blog/posts/gsoc-week2.html</link><dc:creator>Björn Dahlgren</dc:creator><description>&lt;div&gt;&lt;p&gt;I have spent the second week of Google Summer of Code on essentially two things:&lt;/p&gt;
-&lt;ol class="arabic simple"&gt;
-&lt;li&gt;Continued work on type awareness in the code printers (&lt;tt class="docutils literal"&gt;CCodePrinter&lt;/tt&gt; and
-&lt;tt class="docutils literal"&gt;FCodePrinter&lt;/tt&gt;). The work is ongoing in &lt;a class="reference external" href="https://github.com/sympy/sympy/pull/12693"&gt;gh-12693&lt;/a&gt;.&lt;/li&gt;
-&lt;li&gt;Writing tutorial &lt;a class="reference external" href="https://github.com/sympy/scipy-2017-codegen-tutorial"&gt;code&lt;/a&gt; on code-generation in the form of jupyter notebooks for the
-upcoming SciPy 2017 &lt;a class="reference external" href="https://scipy2017.scipy.org/ehome/220975/493418/"&gt;conference&lt;/a&gt;.&lt;/li&gt;
-&lt;/ol&gt;
-&lt;div class="section" id="precision-aware-code-printers"&gt;
-&lt;h2&gt;Precision aware code printers&lt;/h2&gt;
-&lt;p&gt;After my weekly mentor meeting, we decided to take another approach to
-how we are going to represent &lt;tt class="docutils literal"&gt;Variable&lt;/tt&gt; instances in the
-&lt;tt class="docutils literal"&gt;.codegen.ast&lt;/tt&gt; module. Previously I had proposed to use quite a
-number of arguments (stored in &lt;tt class="docutils literal"&gt;.args&lt;/tt&gt; since it inherits
-&lt;tt class="docutils literal"&gt;Basic&lt;/tt&gt;). Aaron suggested we might want to represent that underlying
-information differently. After some discussion we came to the
-conclusion that we could introduce a &lt;tt class="docutils literal"&gt;Attribute&lt;/tt&gt; class (inhereting
-from &lt;tt class="docutils literal"&gt;Symbol&lt;/tt&gt;) to describe things such as value const-ness, and
-pointer const-ness (those two are available as &lt;tt class="docutils literal"&gt;value_const&lt;/tt&gt; and
-&lt;tt class="docutils literal"&gt;pointer_const&lt;/tt&gt;). Attributes will be stored in a &lt;tt class="docutils literal"&gt;FiniteSet&lt;/tt&gt;
-(essentially SymPy version of &lt;tt class="docutils literal"&gt;set&lt;/tt&gt;) and the instances we provide as
-"pre-made" in the &lt;tt class="docutils literal"&gt;.codegen.ast&lt;/tt&gt; module will be supported by the
-printers by default. Here is some example code showing what the
-current proposed API looks like (for C99):&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-&amp;gt;&amp;gt;&amp;gt; u = symbols('u', real=True)
-&amp;gt;&amp;gt;&amp;gt; ptr = Pointer.deduced(u, {pointer_const, restrict})
-&amp;gt;&amp;gt;&amp;gt; ccode(Declaration(ptr))
-'double * const restrict u;'
-&lt;/pre&gt;
-&lt;p&gt;and for Fortran:&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-&amp;gt;&amp;gt;&amp;gt; vx = Variable(Symbol('x'), {value_const}, float32)
-&amp;gt;&amp;gt;&amp;gt; fcode(Declaration(vx, 42))
-'real(4), parameter :: x = 42'
-&lt;/pre&gt;
-&lt;p&gt;The C code printer can now also print code using different math functions depending
-on the targeted precision (functions guaranteed to be present in the C99 stanard):&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-&amp;gt;&amp;gt;&amp;gt; ccode(x**3.7, standard='c99', precision=float32)
-'powf(x, 3.7F)'
-&amp;gt;&amp;gt;&amp;gt; ccode(exp(x/2), standard='c99', precision=float80)
-'expl((1.0L/2.0L)*x)'
-&lt;/pre&gt;
-&lt;/div&gt;
-&lt;div class="section" id="tutorial-material-for-code-generation"&gt;
-&lt;h2&gt;Tutorial material for code generation&lt;/h2&gt;
-&lt;p&gt;Aaron, Jason and I have been discussing what examples to use for the
-tutorial on code generation with SymPy. Right now we are aiming to use
-quite a few examples from chemistry actually, and more specifically
-&lt;a class="reference external" href="https://en.wikipedia.org/wiki/Chemical_kinetics"&gt;chemical kinetics&lt;/a&gt;. This is the
-precise application which got me started using SymPy for
-code-generation, so it lies close to my heart (I do extensive modeling
-of chemical kinetics in my PhD studies).&lt;/p&gt;
-&lt;p&gt;Working on the tutorial material has already been really helpful for
-getting insight in development needs for the exisiting classes and
-functions used for code-generation. I was hoping to use &lt;tt class="docutils literal"&gt;autowrap&lt;/tt&gt;
-from the &lt;tt class="docutils literal"&gt;.utilities&lt;/tt&gt; module. Unfortunately I found that it was not
-flexible enough to be useful for integration of systems of ODEs (where
-we need to evaluate a vector-valued function taking a vector as
-input). I did attempt to subclass the &lt;tt class="docutils literal"&gt;CodeWrapper&lt;/tt&gt; class to allow
-me to do this. But personally I found those classes to be quite hard to
-extend (much unlike the printers which I've often found to be
-intuitive).&lt;/p&gt;
-&lt;p&gt;My current plan for the chemical kinetics case is to first solve it
-using &lt;tt class="docutils literal"&gt;sympy.lambdify&lt;/tt&gt;.  That allows for quick prototyping, and
-unless one has very high demands with respect to performance, it is
-usually good enough.&lt;/p&gt;
-&lt;p&gt;The next step is to generate a native callback (it was here I was
-hoping to use &lt;tt class="docutils literal"&gt;autowrap&lt;/tt&gt; with the Cython backend). The current
-approach is to write the expressions as Cython code using a template.
-Cython conveniently follows Python syntax, and hence the string
-printer can be used for the code generation. Doing this speeds up the
-integration considerably. At this point the bottleneck is going back and
-forth through the Python layer.&lt;/p&gt;
-&lt;p&gt;So in order to speed up the integration further, we need to bypass
-Python during integration (and let the solver call the user
-provided callbacks without going through the interpreter). I did
-this by providing a C-code template which relies on &lt;tt class="docutils literal"&gt;CVode&lt;/tt&gt; from the
-&lt;a class="reference external" href="https://computation.llnl.gov/projects/sundials"&gt;Sundials&lt;/a&gt; suite of
-non-linear solvers. It is a well established solver and is already
-available for Linux, Mac &amp;amp; Windows under conda from the
-&lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;conda-forge&lt;/span&gt;&lt;/tt&gt; channel. I then provide a thin Cython wrapper, calling
-into the C-function, which:&lt;/p&gt;
-&lt;ol class="arabic simple"&gt;
-&lt;li&gt;sets up the CVode solver&lt;/li&gt;
-&lt;li&gt;runs the integration&lt;/li&gt;
-&lt;li&gt;records some statistics&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;Using native code does come at a cost. One of the strengths of Python
-is that it is cross-platform. It (usually) does not matter if your
-Python application runs on Linux, OSX or Windows (or any other
-supported operating system). However, since we are doing
-code-generation, we are relying on compilers provided by the
-respective platform. Since we want to support both Python 2 &amp;amp; Python 3
-on said three platforms, there are quite a few combinations to cover.
-That meant quite a few surprises (I now know for example that MS
-Visual C++ 2008 does not support C99), but thanks to the kind &lt;a class="reference external" href="https://github.com/sympy/scipy-2017-codegen-tutorial/issues/2#issuecomment-307538308"&gt;help&lt;/a&gt; of
-&lt;a class="reference external" href="https://github.com/isuruf"&gt;Isuru Fernando&lt;/a&gt; I think I will manage to
-have all platform/version combinations working during next week.&lt;/p&gt;
-&lt;p&gt;Also planned for next week:&lt;/p&gt;
-&lt;ul class="simple"&gt;
-&lt;li&gt;Use &lt;tt class="docutils literal"&gt;numba&lt;/tt&gt; together with &lt;tt class="docutils literal"&gt;lambdify&lt;/tt&gt;&lt;/li&gt;
-&lt;li&gt;Use &lt;tt class="docutils literal"&gt;Lambdify&lt;/tt&gt; from &lt;a class="reference external" href="https://github.com/symengine"&gt;SymEngine&lt;/a&gt;
-(preferably with the LLVM backend).&lt;/li&gt;
-&lt;li&gt;Make the notebooks more tutorial like (right now they are more of a
-show-case).&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;and of course: continued work on the code printers. That's all for now
-feel free to get in touch with any feedback or questions.&lt;/p&gt;
-&lt;/div&gt;&lt;/div&gt;</description><category>Python</category><category>SymPy</category><guid>http://bjodah.github.io/blog/posts/gsoc-week2.html</guid><pubDate>Sun, 11 Jun 2017 21:37:00 GMT</pubDate></item><item><title>A summer of code and mathematics</title><link>http://bjodah.github.io/blog/posts/gsoc-week1.html</link><dc:creator>Björn Dahlgren</dc:creator><description>&lt;div&gt;&lt;p&gt;Google are generously funding work on selected &lt;a class="reference external" href="https://en.wikipedia.org/wiki/Open-source_software"&gt;open source&lt;/a&gt; projects each
-year through the &lt;a class="reference external" href="https://summerofcode.withgoogle.com/"&gt;Google Summer of Code&lt;/a&gt; project. The project allows
-under- and post-graduate students around the world to apply to
-mentoring organizations for a scholarship to work on a project during
-the summer. This spring I made the leap, I wrote a &lt;a class="reference external" href="https://github.com/sympy/sympy/wiki/GSoC-2017-Application-Bj%C3%B6rn-Dahlgren:-Improved-code-generation-facilities"&gt;proposal&lt;/a&gt; which
-got accepted, and I am now working full time for the duration of this
-summer on one of these projects. In this blog post I'll give some
-background and tell you about the first project week.&lt;/p&gt;
-&lt;div class="section" id="background"&gt;
-&lt;h2&gt;Background&lt;/h2&gt;
-&lt;p&gt;Since a few years I've been contributing code to the open-source project
-&lt;a class="reference external" href="http://www.sympy.org"&gt;SymPy&lt;/a&gt;. SymPy is a so-called "computer algebra system",
-which lets you manipulate mathematical expressions symbolically. I've used this
-software package extensively in my own doctoral studies and it has been really useful.&lt;/p&gt;
-&lt;p&gt;My research involves formulating mathematical models to: rationalize experimental observations,
-fit parameters or aid in design of experiments. Traditionally one sits down and derive equations,
-often using pen &amp;amp; paper, then one writes computer code which implements said model, and finally
-one writes a paper with the same formulas as LaTeX code (or something similar).
-Note how this procedure involves writing the same equations essentially three times,
-during derivation, coding and finally the article.&lt;/p&gt;
-&lt;p&gt;By using SymPy I can, from a single source:&lt;/p&gt;
-&lt;ol class="arabic simple"&gt;
-&lt;li&gt;Do the derivations (fewer hard-to-find mistakes)&lt;/li&gt;
-&lt;li&gt;Generate the numerical code (a blazing fast computer program)&lt;/li&gt;
-&lt;li&gt;Output LaTeX formatted equations (pretty formulas for the report)&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;A very attractive side-effect of this is that one truly get reproducible research
-(reproducibility is one of the pillars in science). Every step of the process is
-self-documented, and because SymPy is free software: &lt;em&gt;anyone&lt;/em&gt; can redo them. I
-can't stress enough how big this truly is. It is also the main
-motivation why I haven't used proprietary software in place of SymPy,
-even though that software may be considerably more feature complete
-than SymPy, any code I wrote for it would be inaccessible to people
-without a license (possibly even including myself if I leave academia).&lt;/p&gt;
-&lt;p&gt;For this work-flow to work in practice the capabilities of the computer algebra system
-need to be quite extensive, and it is here my current project with SymPy comes in.
-I have had several ideas on how to improve capability number two
-listed above: generating the numerical code, and now I get the chance
-to realize some of them and work with the community to improve SymPy.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="section" id="first-week"&gt;
-&lt;h2&gt;First week&lt;/h2&gt;
-&lt;p&gt;The majority of the first week has been spent on introducing type-awareness into
-the code-printers. SymPy has printer-classes which specialize printing of e.g.
-strings, C code, Fortran code etc. Up to now there has been no way to indicate
-what precision the generated code should be for. The default floating point type
-in python is for example "double precision" (i.e. 64-bit binary IEEE 754 floating
-point). This is also the default precision targeted by the code
-printers.&lt;/p&gt;
-&lt;p&gt;However, there are occasions where one want to use another
-precision. For example, consumer class graphics cards which are
-ubiquitous often have excellent single precision performance, but are
-intentionally capped with respect to double precision arithmetic (due
-to marketing reasons). At other times, one want just a bit of extra
-precision and extended precision (80-bit floating point, usually the
-data type of C's &lt;tt class="docutils literal"&gt;long double&lt;/tt&gt;) is just what's needed to compute
-some values with the required precision. In C, the &lt;a class="reference external" href="http://en.cppreference.com/w/c/numeric/math"&gt;corresponding math functions&lt;/a&gt; are standardized since
-C99.&lt;/p&gt;
-&lt;p&gt;I have started the work to enable the code printers to print this in a
-&lt;a class="reference external" href="https://github.com/sympy/sympy/pull/12693"&gt;pull-request&lt;/a&gt; to the
-SymPy source repository. I have also started experimenting with a
-class representing arrays. Arrays&lt;/p&gt;
-&lt;p&gt;The first weekly meeting with &lt;a class="reference external" href="http://asmeurer.com"&gt;Aaron Meurer&lt;/a&gt; went well and we also briefly
-discussed how to reach out to the SymPy community for wishes on what
-code-generation functions to provide, I've set up a wiki-page for it
-under the SymPy projects wiki:&lt;/p&gt;
-&lt;p&gt;&lt;a class="reference external" href="https://github.com/sympy/sympy/wiki/codegen-gsoc17"&gt;https://github.com/sympy/sympy/wiki/codegen-gsoc17&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;I'll be sending out an email to the &lt;a class="reference external" href="https://groups.google.com/forum/#!forum/sympy"&gt;mailing list for SymPy&lt;/a&gt; asking for feedback.&lt;/p&gt;
-&lt;p&gt;We also discussed the upcoming SciPy 2017 conference where Aaron
-Meurer and &lt;a class="reference external" href="http://www.moorepants.info/"&gt;Jason Moore&lt;/a&gt; will be giving
-a tutorial on code-generation with SymPy. They've asked me to join
-forces with them and I've happily accepted that offer and am looking
-forward to working on the tutorial material and teaching fellow
-developers and researchers in the scientific python community about
-how to leverage SymPy for code generation.&lt;/p&gt;
-&lt;p&gt;Next blog post will most likely be a bit more technical, but I thought
-it was important to give some background on what motivates this effort
-and what the goal is.&lt;/p&gt;
-&lt;/div&gt;&lt;/div&gt;</description><category>Python</category><category>SymPy</category><guid>http://bjodah.github.io/blog/posts/gsoc-week1.html</guid><pubDate>Sat, 03 Jun 2017 13:10:00 GMT</pubDate></item><item><title>Writing tests for Python</title><link>http://bjodah.github.io/blog/posts/writing-tests-for-python.html</link><dc:creator>Björn Dahlgren</dc:creator><description>&lt;div&gt;&lt;p&gt;A coworker asked me about "tests" from a programming practice perspective, "what's the big deal?".
-For me, writing tests is a very small price to pay to comfortably daring to change code without
-the fear of breaking it. Every bug I fix, even during the design phase, gives rise to at least one test.&lt;/p&gt;
-&lt;p&gt;No library or script is too small to have tests, here is a silly example (let's call it &lt;tt class="docutils literal"&gt;rootof.py&lt;/tt&gt;):&lt;/p&gt;
-&lt;pre class="code python"&gt;&lt;a name="rest_code_1f66c939a3944149b939ebe8bd546915-1"&gt;&lt;/a&gt;&lt;span class="ch"&gt;#!/usr/bin/env python&lt;/span&gt;
-&lt;a name="rest_code_1f66c939a3944149b939ebe8bd546915-2"&gt;&lt;/a&gt;
-&lt;a name="rest_code_1f66c939a3944149b939ebe8bd546915-3"&gt;&lt;/a&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;argh&lt;/span&gt;
-&lt;a name="rest_code_1f66c939a3944149b939ebe8bd546915-4"&gt;&lt;/a&gt;
-&lt;a name="rest_code_1f66c939a3944149b939ebe8bd546915-5"&gt;&lt;/a&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;root_of&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;number&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;1.0&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-&lt;a name="rest_code_1f66c939a3944149b939ebe8bd546915-6"&gt;&lt;/a&gt;    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;number&lt;/span&gt;&lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="mf"&gt;0.5&lt;/span&gt;
-&lt;a name="rest_code_1f66c939a3944149b939ebe8bd546915-7"&gt;&lt;/a&gt;
-&lt;a name="rest_code_1f66c939a3944149b939ebe8bd546915-8"&gt;&lt;/a&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;test_root_of&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
-&lt;a name="rest_code_1f66c939a3944149b939ebe8bd546915-9"&gt;&lt;/a&gt;    &lt;span class="k"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;root_of&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;
-&lt;a name="rest_code_1f66c939a3944149b939ebe8bd546915-10"&gt;&lt;/a&gt;    &lt;span class="k"&gt;assert&lt;/span&gt; &lt;span class="nb"&gt;abs&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;root_of&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="mf"&gt;1.4142&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mf"&gt;1e-4&lt;/span&gt;
-&lt;a name="rest_code_1f66c939a3944149b939ebe8bd546915-11"&gt;&lt;/a&gt;
-&lt;a name="rest_code_1f66c939a3944149b939ebe8bd546915-12"&gt;&lt;/a&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="vm"&gt;__name__&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s1"&gt;'__main__'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-&lt;a name="rest_code_1f66c939a3944149b939ebe8bd546915-13"&gt;&lt;/a&gt;    &lt;span class="n"&gt;argh&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;dispatch_command&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;root_of&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;p&gt;The example is so short it's silly, but the point is that each time you edit &lt;tt class="docutils literal"&gt;rootof.py&lt;/tt&gt; you
-should run&lt;/p&gt;
-&lt;pre class="code bash"&gt;&lt;a name="rest_code_86ac70335e294f61b718aad2ccf19a1b-1"&gt;&lt;/a&gt;$ python -m pytest rootof.py
-&lt;/pre&gt;&lt;p&gt;which should exit without errors. That's pretty much the gist of it. Happy testing!&lt;/p&gt;
-&lt;p&gt;P.S. if you don't have &lt;tt class="docutils literal"&gt;argh&lt;/tt&gt; just install it by typing:&lt;/p&gt;
-&lt;pre class="code bash"&gt;&lt;a name="rest_code_7088ab25c4c04198a83f942560a86de0-1"&gt;&lt;/a&gt;$ python -m pip install --user argh
-&lt;/pre&gt;&lt;p&gt;P.P.S if you don't have &lt;tt class="docutils literal"&gt;pip&lt;/tt&gt;: see &lt;a class="reference external" href="https://pip.pypa.io/en/stable/installing/"&gt;this&lt;/a&gt;.&lt;/p&gt;&lt;/div&gt;</description><category>Python</category><guid>http://bjodah.github.io/blog/posts/writing-tests-for-python.html</guid><pubDate>Tue, 17 Jan 2017 23:13:33 GMT</pubDate></item><item><title>Finally a new website!</title><link>http://bjodah.github.io/blog/posts/first-post.html</link><dc:creator>Björn Dahlgren</dc:creator><description>&lt;div&gt;&lt;p&gt;I am now since a little more than two years doing a PhD in Chemistry
-with focus on radiation induced processes at the solid/water interface.&lt;/p&gt;
-&lt;p&gt;On this blog I hope to - if time permits - write about some of the
-problems of more general interest (and their solution) popping up as I
-am striving forward.&lt;/p&gt;
-&lt;p&gt;On a technical note, this blog is staticially generated using &lt;a class="reference external" href="http://www.getnikola.com/"&gt;Nikola&lt;/a&gt; (EDIT 2016-07-27: It used to be Pelican).
-The source for this site is hosted at &lt;a class="reference external" href="http://github.com/bjodah/bjodah.github.io/tree/source"&gt;github&lt;/a&gt;.&lt;/p&gt;&lt;/div&gt;</description><category>nikola</category><category>Python</category><guid>http://bjodah.github.io/blog/posts/first-post.html</guid><pubDate>Sun, 29 Mar 2015 15:03:17 GMT</pubDate></item></channel></rss>
+&lt;/div&gt;&lt;/div&gt;</description><category>Python</category><category>SymPy</category><guid>http://bjodah.github.io/blog/posts/gsoc-week5.html</guid><pubDate>Mon, 03 Jul 2017 18:37:00 GMT</pubDate></item></channel></rss>

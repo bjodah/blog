@@ -7,34 +7,34 @@
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <sitemap>
   <loc>http://bjodah.github.io/blog/categories/bash.xml</loc>
-  <lastmod>2017-05-31T13:36:00Z</lastmod>
+  <lastmod>2017-08-29T11:29:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://bjodah.github.io/blog/categories/docker.xml</loc>
-  <lastmod>2017-05-31T13:36:00Z</lastmod>
+  <lastmod>2017-08-29T11:29:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://bjodah.github.io/blog/categories/nikola.xml</loc>
-  <lastmod>2017-06-04T16:03:00Z</lastmod>
+  <lastmod>2017-08-29T11:29:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://bjodah.github.io/blog/categories/python.xml</loc>
-  <lastmod>2017-07-03T21:22:00Z</lastmod>
+  <lastmod>2017-08-29T12:20:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://bjodah.github.io/blog/categories/reproducible-research.xml</loc>
-  <lastmod>2017-05-31T13:36:00Z</lastmod>
+  <lastmod>2017-08-29T11:29:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://bjodah.github.io/blog/categories/sympy.xml</loc>
-  <lastmod>2017-07-03T21:22:00Z</lastmod>
+  <lastmod>2017-08-29T12:20:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://bjodah.github.io/blog/rss.xml</loc>
-  <lastmod>2017-07-03T21:22:00Z</lastmod>
+  <lastmod>2017-08-29T12:20:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://bjodah.github.io/blog/sitemap.xml</loc>
-  <lastmod>2017-07-03T21:22:00Z</lastmod>
+  <lastmod>2017-08-29T12:20:00Z</lastmod>
  </sitemap>
 </sitemapindex>

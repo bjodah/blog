@@ -82,7 +82,7 @@ The problem that arises is that you">
 <article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="#" class="u-url">Dealing with temporaries in bash.rst</a></h1>
 
         <div class="metadata">
-            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+            <p class="byline author vcard"><span class="byline-name fn">
                     Björn Dahlgren
             </span></p>
             <p class="dateline"><a href="#" rel="bookmark"><time class="published dt-published" datetime="2016-01-06T02:42:10+01:00" itemprop="datePublished" title="2016-01-06 02:42">2016-01-06 02:42</time></a></p>
@@ -93,7 +93,7 @@ The problem that arises is that you">
 
             
         </p>
-<p class="sourceline"><a href="dealing-with-temporaries-in-bash.rst" class="sourcelink">Source</a></p>
+<p class="sourceline"><a href="dealing-with-temporaries-in-bash.rst" id="sourcelink">Source</a></p>
 
         </div>
         
@@ -106,19 +106,19 @@ exectuion of a bash script. For this we may use <tt class="docutils literal">mkt
 if the user aborts the script by e.g. hitting Ctrl+c. An elegant solution was given here
 <a class="reference external" href="http://unix.stackexchange.com/a/149093/119480">http://unix.stackexchange.com/a/149093/119480</a></p>
 <p>to illustrate the solution let's consider the following script:</p>
-<pre class="code bash"><a name="rest_code_2e944e41df014dd0a15ae7af5f198f8b-1"></a><span class="ch">#!/bin/bash</span>
-<a name="rest_code_2e944e41df014dd0a15ae7af5f198f8b-2"></a><span class="nv">TMPDIR</span><span class="o">=</span><span class="k">$(</span>mktemp -d<span class="k">)</span>
-<a name="rest_code_2e944e41df014dd0a15ae7af5f198f8b-3"></a><span class="nb">echo</span> <span class="nv">$TMPDIR</span>
-<a name="rest_code_2e944e41df014dd0a15ae7af5f198f8b-4"></a>cleanup<span class="o">()</span> <span class="o">{</span>
-<a name="rest_code_2e944e41df014dd0a15ae7af5f198f8b-5"></a>    rm -r <span class="nv">$TMPDIR</span>
-<a name="rest_code_2e944e41df014dd0a15ae7af5f198f8b-6"></a>    <span class="nb">exit</span>
-<a name="rest_code_2e944e41df014dd0a15ae7af5f198f8b-7"></a><span class="o">}</span>
-<a name="rest_code_2e944e41df014dd0a15ae7af5f198f8b-8"></a><span class="nb">trap</span> cleanup INT TERM
-<a name="rest_code_2e944e41df014dd0a15ae7af5f198f8b-9"></a><span class="nb">echo</span> <span class="s2">"A"</span> <span class="p">|</span> tee <span class="nv">$TMPDIR</span>/a.txt
-<a name="rest_code_2e944e41df014dd0a15ae7af5f198f8b-10"></a>sleep <span class="m">3</span>  <span class="c1"># Try hitting Ctrl-C here (use Ctrl-Z to inspect files)</span>
-<a name="rest_code_2e944e41df014dd0a15ae7af5f198f8b-11"></a><span class="nb">echo</span> <span class="s2">"B"</span> <span class="p">|</span> tee <span class="nv">$TMPDIR</span>/b.txt
-<a name="rest_code_2e944e41df014dd0a15ae7af5f198f8b-12"></a>cleanup
-<a name="rest_code_2e944e41df014dd0a15ae7af5f198f8b-13"></a><span class="nb">echo</span> <span class="s2">"C"</span> <span class="p">|</span> tee <span class="nv">$TMPDIR</span>/b.txt <span class="c1"># will never be reached</span>
+<pre class="code bash"><a name="rest_code_1fdbdbf81b6d460dbacd322fa0e0175b-1"></a><span class="ch">#!/bin/bash</span>
+<a name="rest_code_1fdbdbf81b6d460dbacd322fa0e0175b-2"></a><span class="nv">TMPDIR</span><span class="o">=</span><span class="k">$(</span>mktemp -d<span class="k">)</span>
+<a name="rest_code_1fdbdbf81b6d460dbacd322fa0e0175b-3"></a><span class="nb">echo</span> <span class="nv">$TMPDIR</span>
+<a name="rest_code_1fdbdbf81b6d460dbacd322fa0e0175b-4"></a>cleanup<span class="o">()</span> <span class="o">{</span>
+<a name="rest_code_1fdbdbf81b6d460dbacd322fa0e0175b-5"></a>    rm -r <span class="nv">$TMPDIR</span>
+<a name="rest_code_1fdbdbf81b6d460dbacd322fa0e0175b-6"></a>    <span class="nb">exit</span>
+<a name="rest_code_1fdbdbf81b6d460dbacd322fa0e0175b-7"></a><span class="o">}</span>
+<a name="rest_code_1fdbdbf81b6d460dbacd322fa0e0175b-8"></a><span class="nb">trap</span> cleanup INT TERM
+<a name="rest_code_1fdbdbf81b6d460dbacd322fa0e0175b-9"></a><span class="nb">echo</span> <span class="s2">"A"</span> <span class="p">|</span> tee <span class="nv">$TMPDIR</span>/a.txt
+<a name="rest_code_1fdbdbf81b6d460dbacd322fa0e0175b-10"></a>sleep <span class="m">3</span>  <span class="c1"># Try hitting Ctrl-C here (use Ctrl-Z to inspect files)</span>
+<a name="rest_code_1fdbdbf81b6d460dbacd322fa0e0175b-11"></a><span class="nb">echo</span> <span class="s2">"B"</span> <span class="p">|</span> tee <span class="nv">$TMPDIR</span>/b.txt
+<a name="rest_code_1fdbdbf81b6d460dbacd322fa0e0175b-12"></a>cleanup
+<a name="rest_code_1fdbdbf81b6d460dbacd322fa0e0175b-13"></a><span class="nb">echo</span> <span class="s2">"C"</span> <span class="p">|</span> tee <span class="nv">$TMPDIR</span>/b.txt <span class="c1"># will never be reached</span>
 </pre>
 <p>The above code removes the temporary directory created at exit, no matter if the
 script is allowed to finnish or aborted by the user invoking <tt class="docutils literal">kill</tt> on the PID
